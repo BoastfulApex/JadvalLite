@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>Excel Yuklash — {{ guruh.nom }}</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Mulish:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#f1f5f9; --surface:#ffffff; --s2:#f8fafc; --s3:#f1f5f9; --border:#e2e8f0; --accent:#2563eb; --accent2:#1d4ed8; --text:#0f172a; --muted:#64748b; --green:#059669; --radius:14px; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Mulish',sans-serif; min-height:100vh; }
+header { background:rgba(255,255,255,0.98); border-bottom:1px solid var(--border); padding:0 36px; height:68px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 1px 4px rgba(0,0,0,.06); }
+.logo-title { font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:3px; color:var(--accent); }
+.btn { padding:9px 20px; border-radius:10px; font-family:'Mulish',sans-serif; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s; border:1px solid transparent; }
+.btn-outline { background:var(--s2); border-color:var(--border); color:var(--muted); }
+.btn-outline:hover { border-color:var(--accent); color:var(--accent); }
+.btn-primary { background:linear-gradient(135deg,var(--accent2),var(--accent)); color:#fff; border:none; }
+
+main { max-width:700px; margin:0 auto; padding:40px 24px; }
+.page-title { font-family:'Bebas Neue',sans-serif; font-size:36px; letter-spacing:4px; margin-bottom:4px; color:var(--text); }
+.group-badge { display:inline-flex; align-items:center; gap:8px; background:#eff6ff; border:1px solid rgba(37,99,235,0.3); border-radius:100px; padding:5px 14px; font-size:11px; color:var(--accent); font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:12px; }
+
+.card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:36px; margin-bottom:20px; box-shadow:0 1px 6px rgba(0,0,0,.05); }
+
+.current-info {
+  background:#f0fdf4; border:1px solid rgba(5,150,105,.2); border-radius:12px;
+  padding:16px 20px; display:flex; align-items:center; gap:14px; margin-bottom:28px;
+}
+.info-icon { font-size:28px; }
+.info-text { font-size:14px; font-weight:600; color:var(--text); }
+.info-sub { font-size:12px; color:var(--muted); margin-top:3px; }
+
+/* Drop zone */
+.dropzone {
+  border:2px dashed var(--border); border-radius:16px; padding:48px;
+  text-align:center; cursor:pointer; transition:all 0.25s;
+  background:var(--s3);
+}
+.dropzone:hover, .dropzone.dragover {
+  border-color:var(--accent); background:#eff6ff;
+}
+.dz-icon { font-size:52px; margin-bottom:16px; }
+.dz-title { font-size:18px; font-weight:800; margin-bottom:8px; color:var(--text); }
+.dz-sub { font-size:13px; color:var(--muted); margin-bottom:20px; }
+.dz-formats { font-size:11px; color:var(--muted); background:var(--surface); border:1px solid var(--border); border-radius:8px; display:inline-block; padding:4px 12px; }
+
+input[type=file] { display:none; }
+
+.selected-file {
+  display:none; align-items:center; gap:14px; margin-top:20px;
+  background:#f0fdf4; border:1px solid rgba(5,150,105,.25);
+  border-radius:12px; padding:14px 18px;
+}
+.sf-icon { font-size:24px; }
+.sf-name { font-weight:700; font-size:14px; color:var(--text); }
+.sf-size { font-size:12px; color:var(--muted); }
+
+.btn-upload {
+  width:100%; padding:16px; margin-top:24px;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  border:none; border-radius:14px; color:#fff;
+  font-family:'Mulish',sans-serif; font-size:16px; font-weight:800;
+  cursor:pointer; letter-spacing:1px; transition:opacity 0.2s, transform 0.1s;
+}
+.btn-upload:hover { opacity:0.9; }
+.btn-upload:disabled { opacity:0.4; cursor:not-allowed; }
+.btn-upload:active { transform:scale(0.99); }
+
+/* Messages */
+.messages-wrap { margin-bottom:20px; }
+.msg { padding:12px 18px; border-radius:12px; font-size:13px; font-weight:600; display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.msg-success { background:#f0fdf4; border:1px solid rgba(5,150,105,.3); color:var(--green); }
+.msg-error { background:#fef2f2; border:1px solid rgba(220,38,38,.3); color:#dc2626; }
+.msg-info { background:#eff6ff; border:1px solid rgba(37,99,235,.3); color:var(--accent); }
+
+.instructions {
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:20px 24px; box-shadow:0 1px 4px rgba(0,0,0,.04);
+}
+.inst-title { font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:14px; }
+.inst-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.inst-list li { font-size:13px; display:flex; align-items:flex-start; gap:10px; color:var(--text); }
+.inst-num { width:22px; height:22px; border-radius:6px; background:var(--accent2); color:#fff; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-title">📤 EXCEL YUKLASH</div>
+  <a href="{% url 'admin_panel' %}" class="btn btn-outline">← Admin Panelga</a>
+</header>
+
+<main>
+  <div class="group-badge">{{ guruh.ikonka }} {{ guruh.nom }}</div>
+  <div class="page-title">JADVAL YUKLASH</div>
+  <p style="color:var(--muted);font-size:13px;margin-bottom:32px;font-weight:300">Excel fayldagi dars jadvalini yuklang</p>
+
+  {% if messages %}
+  <div class="messages-wrap">
+    {% for msg in messages %}
+    <div class="msg msg-{% if msg.tags == 'error' %}error{% elif msg.tags == 'info' %}info{% else %}success{% endif %}">
+      {% if msg.tags == 'success' %}✅{% elif msg.tags == 'error' %}❌{% else %}ℹ️{% endif %} {{ msg }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="card">
+    {% if lesson_count > 0 %}
+    <div class="current-info">
+      <div class="info-icon">📊</div>
+      <div>
+        <div class="info-text">Hozir {{ lesson_count }} ta dars yuklangan</div>
+        <div class="info-sub">Yangi fayl yuklananda eskisi o'chiriladi</div>
+      </div>
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" id="uploadForm">
+      {% csrf_token %}
+      <input type="file" name="excel_file" id="fileInput" accept=".xlsx,.xls">
+
+      <div class="dropzone" id="dropzone" onclick="document.getElementById('fileInput').click()">
+        <div class="dz-icon">📂</div>
+        <div class="dz-title">Excel faylni tanlang yoki shu yerga tashlang</div>
+        <div class="dz-sub">Guruhingizning dars jadvali bo'lgan Excel faylni yuklang</div>
+        <div class="dz-formats">.xlsx &nbsp;·&nbsp; .xls</div>
+      </div>
+
+      <div class="selected-file" id="selectedFile">
+        <div class="sf-icon">📄</div>
+        <div>
+          <div class="sf-name" id="sfName"></div>
+          <div class="sf-size" id="sfSize"></div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-upload" id="uploadBtn" disabled>
+        📤 Jadval Yuklash
+      </button>
+    </form>
+  </div>
+
+  <div class="instructions">
+    <div class="inst-title">📋 Excel fayl talablari</div>
+    <ul class="inst-list">
+      <li><div class="inst-num">1</div> Excel faylda dars jadvali varag'i bo'lishi kerak</li>
+      <li><div class="inst-num">2</div> Sana, hafta kuni, para, vaqt, modul, tur, o'qituvchi, xona ustunlari kerak</li>
+      <li><div class="inst-num">3</div> Fayl bir necha varaqdan iborat bo'lsa, birinchi dars ma'lumotlari bo'lgan varaq olinadi</div></li>
+      <li><div class="inst-num">4</div> Sana ustunida Excel sana formati bo'lishi kerak (masalan: 02.03.2026)</li>
+    </ul>
+  </div>
+</main>
+
+<script>
+const fileInput = document.getElementById('fileInput');
+const dropzone = document.getElementById('dropzone');
+const uploadBtn = document.getElementById('uploadBtn');
+const selectedFile = document.getElementById('selectedFile');
+
+fileInput.addEventListener('change', function() {
+  if (this.files[0]) showFile(this.files[0]);
+});
+
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+dropzone.addEventListener('drop', e => {
+  e.preventDefault(); dropzone.classList.remove('dragover');
+  const f = e.dataTransfer.files[0];
+  if (f && (f.name.endsWith('.xlsx') || f.name.endsWith('.xls'))) {
+    const dt = new DataTransfer(); dt.items.add(f);
+    fileInput.files = dt.files;
+    showFile(f);
+  }
+});
+
+function showFile(f) {
+  document.getElementById('sfName').textContent = f.name;
+  document.getElementById('sfSize').textContent = (f.size / 1024).toFixed(0) + ' KB';
+  selectedFile.style.display = 'flex';
+  uploadBtn.disabled = false;
+  uploadBtn.textContent = '📤 ' + f.name + ' ni yuklash';
+}
+
+document.getElementById('uploadForm').addEventListener('submit', function() {
+  uploadBtn.disabled = true;
+  uploadBtn.textContent = '⏳ Yuklanmoqda...';
+});
+</script>
+</body>
+</html>

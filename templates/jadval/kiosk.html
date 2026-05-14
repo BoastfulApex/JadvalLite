@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dars Jadvali — Display</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════
+   PORTRAIT KIOSK  1080 × 1920
+   Light Theme — Oq fon, yorqin ranglar
+════════════════════════════════════ */
+:root {
+  --bg:      #f0f4f8;
+  --sb:      #ffffff;
+  --sb2:     #f8fafc;
+  --card:    #ffffff;
+  --card2:   #f1f5f9;
+  --border:  #e2e8f0;
+  --border2: #cbd5e1;
+  --accent:  #2563eb;
+  --a2:      #1d4ed8;
+  --gold:    #d97706;
+  --text:    #0f172a;
+  --muted:   #64748b;
+  --muted2:  #94a3b8;
+  --green:   #059669;
+  --red:     #dc2626;
+  --purple:  #7c3aed;
+  --r:       12px;
+  --SB:      200px;
+  --HDR:     72px;
+  --m1: #2563eb;
+  --m2: #059669;
+  --m3: #d97706;
+  --m4: #dc2626;
+  --m5: #7c3aed;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  user-select: none;
+  overflow-x: hidden;
+}
+
+/* subtle grid */
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(148,163,184,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148,163,184,.07) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+body::after { display: none; }
+
+/* ════════════════════════
+   LAYOUT  — portrait split
+════════════════════════ */
+.layout {
+  display: grid;
+  grid-template-columns: var(--SB) 1fr;
+  grid-template-rows: 1fr;
+  width: 100%;
+  min-height: 100dvh;
+  position: relative; z-index: 1;
+}
+
+/* ════════════════════════
+   SIDEBAR
+════════════════════════ */
+.sidebar {
+  grid-column: 1;
+  background: var(--sb);
+  border-right: 1.5px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  z-index: 10;
+  box-shadow: 2px 0 10px rgba(0,0,0,.06);
+}
+
+/* Logo */
+.sb-logo {
+  padding: 26px 20px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.sb-logo-row {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+.sb-logo-box {
+  width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--a2), var(--accent));
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+}
+.sb-app-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px; letter-spacing: 3px;
+  color: var(--accent);
+}
+.sb-app-sub { font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-top: 2px; }
+
+.sb-search {
+  width: 100%; padding: 11px 14px;
+  background: var(--card2); border: 1.5px solid var(--border); border-radius: 10px;
+  color: var(--text); font-family: 'Nunito', sans-serif; font-size: 13px; outline: none;
+  transition: border-color .2s;
+}
+.sb-search:focus { border-color: var(--accent); }
+.sb-search::placeholder { color: var(--muted2); }
+
+.sb-list-label {
+  padding: 14px 20px 6px;
+  font-size: 10px; font-weight: 800; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 2px; flex-shrink: 0;
+}
+
+/* Group list */
+.sb-list {
+  flex: 1; overflow-y: auto; padding: 5px 10px 10px;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+.sb-list::-webkit-scrollbar { width: 3px; }
+.sb-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+.sb-item {
+  display: flex; align-items: center; gap: 11px;
+  padding: 12px 12px; border-radius: 12px;
+  text-decoration: none; color: var(--text);
+  border: 1.5px solid transparent;
+  transition: all .15s; margin-bottom: 3px;
+}
+.sb-item:hover { background: var(--card2); border-color: var(--border); }
+.sb-item.active {
+  background: #eff6ff; border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(37,99,235,.12);
+}
+.sb-ikon {
+  width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; overflow: hidden;
+  background: var(--card2); border: 1px solid var(--border);
+}
+.sb-ikon img { width: 100%; height: 100%; object-fit: cover; border-radius: 9px; }
+.sb-item.active .sb-ikon { border-color: rgba(37,99,235,.4); }
+.sb-info { flex: 1; min-width: 0; }
+.sb-name { font-size: 13px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+.sb-cnt { font-size: 10px; color: var(--muted); margin-top: 2px; }
+.sb-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* Clock bottom */
+.sb-bottom {
+  border-top: 1px solid var(--border);
+  padding: 16px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+  background: var(--card2);
+}
+.sb-time {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px; letter-spacing: 5px; color: var(--accent); line-height: 1;
+}
+.sb-date { font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 3px; }
+.sb-admin-link { font-size: 22px; opacity: .5; text-decoration: none; transition: opacity .2s; }
+.sb-admin-link:hover { opacity: 1; }
+
+/* ════════════════════════
+   RIGHT PANEL
+════════════════════════ */
+.right {
+  grid-column: 2;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  min-height: 100dvh;
+}
+
+/* Hamburger (mobile only) */
+.hamburger {
+  display: none;
+  background: var(--card2); border: 1.5px solid var(--border);
+  border-radius: 9px; padding: 7px 10px;
+  color: var(--accent); font-size: 17px; cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Sidebar backdrop */
+.sb-backdrop {
+  display: none;
+  position: fixed; inset: 0; z-index: 999;
+  background: rgba(15,23,42,.25);
+}
+.sb-backdrop.open { display: block; }
+
+/* Top bar */
+.topbar {
+  min-height: var(--HDR);
+  background: rgba(255,255,255,.97);
+  border-bottom: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 18px; gap: 10px; flex-shrink: 0;
+  flex-wrap: wrap;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  position: sticky; top: 0; z-index: 9;
+}
+.tb-left { display: flex; align-items: center; gap: 11px; min-width: 0; flex-wrap: wrap; }
+
+.tb-badge {
+  display: inline-flex; align-items: center; gap: 7px; flex-shrink: 0;
+  background: #eff6ff; border: 1px solid rgba(37,99,235,.3);
+  border-radius: 100px; padding: 6px 15px;
+  font-size: 12px; font-weight: 800; color: var(--accent);
+  letter-spacing: 1px; text-transform: uppercase;
+}
+.tb-ikon { width: 20px; height: 20px; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+.tb-ikon img { width: 100%; height: 100%; object-fit: cover; }
+
+.tb-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 4px; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tb-hint { color: var(--muted); font-size: 15px; font-weight: 600; }
+
+.tb-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; flex-wrap: wrap; }
+
+/* Tabs */
+.tabs {
+  display: flex; background: var(--card2); border: 1.5px solid var(--border);
+  border-radius: 11px; padding: 4px; gap: 3px;
+}
+.tab {
+  padding: 10px 22px; border-radius: 8px;
+  font-size: 13px; font-weight: 800; letter-spacing: .4px;
+  cursor: pointer; text-decoration: none;
+  color: var(--muted); background: transparent; border: none;
+  transition: all .15s; display: flex; align-items: center; gap: 6px;
+  font-family: 'Nunito', sans-serif;
+}
+.tab.on { background: linear-gradient(135deg, var(--a2), var(--accent)); color: #fff; box-shadow: 0 3px 10px rgba(37,99,235,.25); }
+.tab:not(.on):hover { color: var(--accent); }
+
+/* Week buttons */
+.wnav { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.wlabel { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
+.wbtn {
+  padding: 7px 13px; border-radius: 8px; font-size: 12px; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  border: 1.5px solid var(--border); color: var(--muted); background: var(--card);
+  transition: all .15s;
+}
+.wbtn:hover { border-color: var(--accent); color: var(--accent); }
+.wbtn.on { background: #eff6ff; border-color: var(--accent); color: var(--accent); font-weight: 900; }
+
+/* Content */
+.content {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  padding: 16px 18px 24px;
+}
+.content::-webkit-scrollbar { width: 4px; }
+.content::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ── Empty ── */
+.empty-st {
+  min-height: 60vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: var(--muted); gap: 18px;
+}
+.empty-ico { font-size: 70px; opacity: .3; }
+.empty-ttl { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 4px; }
+.empty-sub { font-size: 15px; opacity: .7; }
+
+/* ════════════════════════
+   HAFTALIK
+════════════════════════ */
+.wgrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+  animation: fadeUp .28s ease both;
+}
+
+.day-col {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--r); overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+}
+.day-col.today-col {
+  border: 2px solid #2563eb;
+  box-shadow: 0 4px 16px rgba(37,99,235,.2);
+  background: #f8fbff;
+}
+
+.day-hd {
+  padding: 9px 10px 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--card2); flex-shrink: 0;
+}
+.day-hd.today {
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  border-bottom-color: #1d4ed8;
+}
+.day-nm {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px; letter-spacing: 1.5px; color: var(--accent);
+}
+.day-hd.today .day-nm { color: #ffffff; font-weight: bold; }
+.day-hd.today .day-dt { color: rgba(255,255,255,.75); }
+.today-tag {
+  font-size: 7px; font-weight: 900; background: #fff; color: #1d4ed8;
+  border-radius: 3px; padding: 1px 5px; letter-spacing: 1px;
+  text-transform: uppercase; margin-left: 4px; vertical-align: middle;
+}
+.day-dt { font-size: 9px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+
+.day-lessons { padding: 6px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+
+/* Lesson card */
+.lcard {
+  border-radius: 8px; padding: 8px 9px;
+  border: 1.5px solid var(--border); border-left: 3px solid var(--accent);
+  cursor: pointer; background: var(--card);
+  transition: transform .13s, box-shadow .13s, border-color .13s;
+}
+.lcard:hover { transform: translateX(2px); box-shadow: 0 3px 12px rgba(0,0,0,.1); }
+.lcard:active { transform: scale(.99); }
+
+.mc-1 { border-left-color: var(--m1); background: #eff6ff; }
+.mc-2 { border-left-color: var(--m2); background: #f0fdf4; }
+.mc-3 { border-left-color: var(--m3); background: #fffbeb; }
+.mc-4 { border-left-color: var(--m4); background: #fef2f2; }
+.mc-5 { border-left-color: var(--m5); background: #faf5ff; }
+.mc-0 { border-left-color: var(--a2); background: #eff6ff; }
+
+.lc-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; gap: 4px; }
+.lc-para { font-size: 8px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+.lc-time {
+  font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 1px;
+  background: #dbeafe; color: var(--a2);
+  border-radius: 4px; padding: 1px 6px; white-space: nowrap;
+}
+.lc-mod { font-size: 10px; font-weight: 800; line-height: 1.3; margin-bottom: 4px; color: var(--text); }
+.lc-teacher { font-size: 9px; color: var(--text); font-weight: 700; margin-bottom: 4px; line-height: 1.3; }
+.lc-room {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 8px; font-weight: 800;
+  background: #dbeafe; color: #1d4ed8;
+  border: 1px solid rgba(37,99,235,.25);
+  border-radius: 5px; padding: 2px 7px;
+  margin-top: 2px;
+}
+.lc-tag {
+  display: inline-block; font-size: 7px; font-weight: 900;
+  letter-spacing: 1px; padding: 2px 6px; border-radius: 4px;
+  text-transform: uppercase; margin-top: 4px;
+}
+.t-naz { background: #dbeafe; color: #1d4ed8; }
+.t-am  { background: #d1fae5; color: #065f46; }
+.t-ko  { background: #fef3c7; color: #92400e; }
+.lc-hint { font-size: 8px; color: var(--muted2); margin-top: 4px; }
+
+.day-empty {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: var(--muted2); gap: 4px; padding: 12px;
+}
+.day-empty-ico { font-size: 18px; }
+.day-empty-txt { font-size: 9px; }
+
+/* Legend */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 11px 18px; margin-top: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+.leg-ttl { font-size: 10px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; }
+.leg { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text); }
+.ldot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+.lsep { width: 1px; height: 10px; background: var(--border2); }
+
+/* ════════════════════════
+   KUNLIK — 2 ustun grid
+════════════════════════ */
+.dview { display: flex; flex-direction: column; gap: 10px; animation: fadeUp .28s ease both; }
+
+.d-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border: 1.5px solid rgba(37,99,235,.25); border-radius: var(--r); padding: 15px 22px;
+}
+.d-day { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 4px; color: var(--a2); }
+.d-date { font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 3px; }
+.d-cnt { font-family: 'Bebas Neue', sans-serif; font-size: 44px; letter-spacing: 2px; color: var(--accent); text-align: right; }
+.d-cnt-lbl { font-size: 10px; color: var(--muted); text-align: right; font-weight: 700; }
+
+.d-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+
+.dlcard {
+  display: flex; background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--r); overflow: hidden; cursor: pointer;
+  transition: all .15s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+}
+.dlcard:hover { border-color: rgba(37,99,235,.3); transform: translateX(3px); box-shadow: 0 4px 16px rgba(0,0,0,.1); }
+.dl-bar { width: 5px; flex-shrink: 0; }
+.dl-body { flex: 1; padding: 12px 16px; }
+.dl-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+.dl-pt { display: flex; align-items: center; gap: 8px; }
+.dl-para { font-size: 9px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; }
+.dl-time {
+  font-family: 'Bebas Neue', sans-serif; font-size: 15px; letter-spacing: 2px;
+  background: #dbeafe; color: var(--accent); border-radius: 6px; padding: 2px 10px;
+}
+.dl-mod { font-size: 14px; font-weight: 800; line-height: 1.35; margin-bottom: 7px; color: var(--text); }
+.dl-meta { display: flex; gap: 14px; flex-wrap: wrap; }
+.dl-teacher { font-size: 12px; color: var(--text); font-weight: 700; display: flex; align-items: center; gap: 5px; }
+.dl-room {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 800;
+  background: #dbeafe; color: #1d4ed8;
+  border: 1px solid rgba(37,99,235,.25);
+  border-radius: 8px; padding: 4px 12px;
+}
+.dl-tag { display: inline-block; font-size: 8px; font-weight: 900; letter-spacing: 1px; padding: 3px 9px; border-radius: 5px; text-transform: uppercase; }
+.dl-hint { font-size: 9px; color: var(--muted2); margin-top: 7px; }
+
+.no-lessons {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 13px; padding: 50px 40px; color: var(--muted);
+}
+.no-lessons-ico { font-size: 48px; }
+.no-lessons-ttl { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 4px; }
+
+/* ════════════════════════
+   MODAL
+════════════════════════ */
+.overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(15,23,42,.5); backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px;
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  width: min(780px, 100%);
+  background: #ffffff; border: 2px solid var(--border);
+  border-radius: 20px; overflow: hidden;
+  transform: scale(.93) translateY(16px);
+  transition: transform .24s cubic-bezier(.34,1.56,.64,1);
+  box-shadow: 0 24px 60px rgba(0,0,0,.18);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+}
+.overlay.open .modal { transform: scale(1) translateY(0); }
+
+.m-top {
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 14px;
+  background: #f8fafc;
+}
+.m-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #eff6ff; border: 1px solid rgba(37,99,235,.25);
+  border-radius: 100px; padding: 4px 13px; margin-bottom: 10px;
+  font-size: 10px; font-weight: 800; color: var(--accent); letter-spacing: 1px; text-transform: uppercase;
+}
+.m-modul { font-size: 21px; font-weight: 900; line-height: 1.35; max-width: 650px; color: var(--text); }
+.m-close {
+  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+  background: #fef2f2; border: 1.5px solid rgba(220,38,38,.25);
+  color: var(--red); font-size: 17px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: all .15s;
+}
+.m-close:hover { background: #fee2e2; }
+
+.m-body { padding: 20px 28px 24px; display: flex; flex-direction: column; gap: 11px; background: #ffffff; }
+
+.m-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+.minfo {
+  background: var(--card2); border: 1.5px solid var(--border);
+  border-radius: 11px; padding: 13px 16px;
+}
+.minfo-ico { font-size: 17px; margin-bottom: 5px; }
+.minfo-lbl { font-size: 8px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+.minfo-val { font-size: 14px; font-weight: 800; line-height: 1.3; color: var(--text); }
+
+.m-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.m-tur-tag { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: 1px; padding: 7px 16px; border-radius: 9px; text-transform: uppercase; }
+
+/* Timer */
+.timer-wrap {
+  background: var(--card2); border: 1.5px solid var(--border);
+  border-radius: 11px; padding: 11px 16px;
+  display: flex; align-items: center; gap: 13px;
+}
+.timer-lbl { font-size: 9px; color: var(--muted); font-weight: 700; letter-spacing: 1px; flex-shrink: 0; }
+.timer-bg { flex: 1; height: 7px; background: var(--border); border-radius: 100px; overflow: hidden; }
+.timer-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent), var(--a2)); transition: width .5s linear, background .5s; }
+.timer-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; color: var(--accent); min-width: 26px; text-align: right; flex-shrink: 0; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ════════════════════════
+   RESPONSIVE — Tablet + Mobile (< 1200px)
+════════════════════════ */
+@media (max-width: 1199px) {
+  .layout { grid-template-columns: 1fr; }
+
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: min(280px, 85vw);
+    height: 100dvh;
+    transform: translateX(-110%);
+    transition: transform .28s cubic-bezier(.4,0,.2,1);
+    z-index: 1000;
+    box-shadow: 4px 0 30px rgba(0,0,0,.15);
+    overflow: hidden;
+  }
+  .sidebar.sb-open { transform: translateX(0); }
+
+  .right { grid-column: 1; min-height: 100dvh; }
+
+  .hamburger { display: flex; align-items: center; justify-content: center; }
+
+  /* Haftalik: ketma-ket */
+  .wgrid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .day-col {
+    border-radius: 0;
+    border-left: none; border-right: none; border-top: none;
+    min-height: unset;
+    box-shadow: none;
+  }
+  .day-col.today-col { border-left: none; border-right: none; border-top: none; }
+  .day-col:first-child { border-top: 1.5px solid var(--border); border-radius: var(--r) var(--r) 0 0; }
+  .day-col:last-child { border-radius: 0 0 var(--r) var(--r); }
+
+  .day-lessons { gap: 0; padding: 0; }
+  .lcard {
+    border-radius: 0;
+    border-left-width: 4px;
+    border-top: none; border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .lcard:last-child { border-bottom: none; }
+
+  /* Kunlik: 1 ustun */
+  .d-grid { grid-template-columns: 1fr; }
+
+  .m-row { grid-template-columns: repeat(2, 1fr); }
+
+  .topbar { padding: 8px 14px; }
+  .content { padding: 14px 14px 24px; }
+}
+
+/* ════════════════════════
+   RESPONSIVE — Mobile (< 480px)
+════════════════════════ */
+@media (max-width: 479px) {
+  .tb-title { font-size: 15px; letter-spacing: 1px; }
+  .content { padding: 10px 10px 20px; }
+  .m-body { padding: 14px 14px 18px; }
+  .m-top { padding: 14px 14px 12px; }
+  .wnav { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 3px; }
+  .wnav::-webkit-scrollbar { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="sb-backdrop" id="sbBackdrop" onclick="closeSidebar()"></div>
+<div class="layout">
+
+  <!-- ══════════════════════
+       SIDEBAR
+  ══════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sb-logo">
+      <div class="sb-logo-row">
+        <div class="sb-logo-box">🎓</div>
+        <div>
+          <div class="sb-app-name">JADVAL</div>
+          <div class="sb-app-sub">Mart 2026</div>
+        </div>
+      </div>
+      <input class="sb-search" type="text" id="sbSearch"
+             placeholder="Guruh qidirish..." oninput="filterGroups()">
+    </div>
+
+    <div class="sb-list-label">GURUHLAR</div>
+
+    <div class="sb-list" id="sbList">
+      {% for g in guruhlar %}
+      <a href="?guruh={{ g.id }}&mode={{ view_mode }}{% if selected_week %}&hafta={{ selected_week|date:'Y-m-d' }}{% endif %}"
+         class="sb-item {% if selected_guruh.id == g.id %}active{% endif %}"
+         data-name="{{ g.nom|lower }}">
+        <div class="sb-ikon">
+          {% if g.ikonka_rasm %}<img src="{{ g.ikonka_rasm.url }}" alt="">
+          {% else %}{{ g.ikonka }}{% endif %}
+        </div>
+        <div class="sb-info">
+          <div class="sb-name">{{ g.nom }}</div>
+          <div class="sb-cnt">{{ g.darslar.count }} ta dars</div>
+        </div>
+        <div class="sb-dot" style="background:{{ g.rang }};color:{{ g.rang }}"></div>
+      </a>
+      {% empty %}
+      <div style="padding:20px 14px;text-align:center;color:#64748b;font-size:11px;line-height:1.7;">
+        Guruhlar yo'q.<br>Admin panelda yarating.
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="sb-bottom">
+      <div>
+        <div class="sb-time" id="clock">--:--</div>
+        <div class="sb-date" id="cdate"></div>
+      </div>
+      <a href="/admin-panel/" class="sb-admin-link" title="Admin panel">⚙️</a>
+    </div>
+
+  </aside>
+
+  <!-- ══════════════════════
+       RIGHT PANEL
+  ══════════════════════ -->
+  <div class="right">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="tb-left">
+        <button class="hamburger" onclick="toggleSidebar()" aria-label="Menyu">☰</button>
+        {% if selected_guruh %}
+        <div class="tb-badge">
+          <div class="tb-ikon">
+            {% if selected_guruh.ikonka_rasm %}<img src="{{ selected_guruh.ikonka_rasm.url }}" alt="">
+            {% else %}{{ selected_guruh.ikonka }}{% endif %}
+          </div>
+          {{ selected_guruh.nom }}
+        </div>
+        <div class="tb-title">
+          {% if view_mode == 'kunlik' %}BUGUNGI DARSLAR{% else %}HAFTALIK JADVAL{% endif %}
+        </div>
+        {% else %}
+        <div class="tb-hint">← Chap paneldan guruhni tanlang</div>
+        {% endif %}
+      </div>
+
+      <div class="tb-right">
+        {% if selected_guruh %}
+        <div class="tabs">
+          <a href="?guruh={{ selected_guruh.id }}&mode=haftalik{% if selected_week %}&hafta={{ selected_week|date:'Y-m-d' }}{% endif %}"
+             class="tab {% if view_mode == 'haftalik' %}on{% endif %}">📅 Haftalik</a>
+          <a href="?guruh={{ selected_guruh.id }}&mode=kunlik"
+             class="tab {% if view_mode == 'kunlik' %}on{% endif %}">☀️ Bugun</a>
+        </div>
+        {% if view_mode == 'haftalik' and weeks %}
+        <div class="wnav">
+          <span class="wlabel">Hafta:</span>
+          {% for w in weeks %}
+          <a href="?guruh={{ selected_guruh.id }}&mode=haftalik&hafta={{ w|date:'Y-m-d' }}"
+             class="wbtn {% if w == selected_week %}on{% endif %}">{{ w|date:"d.m" }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      {% if not selected_guruh %}
+      <div class="empty-st">
+        <div class="empty-ico">👈</div>
+        <div class="empty-ttl">Guruhni tanlang</div>
+        <div class="empty-sub">Chap paneldagi ro'yxatdan guruhingizni bosing</div>
+      </div>
+
+      {% elif view_mode == 'haftalik' and week_schedule %}
+      <!-- ═══ HAFTALIK ═══ -->
+      <div class="wgrid">
+        {% for day in week_schedule %}
+        <div class="day-col {% if day.is_today %}today-col{% endif %}">
+          <div class="day-hd {% if day.is_today %}today{% endif %}">
+            <div class="day-nm">
+              {{ day.day_name }}
+              {% if day.is_today %}<span class="today-tag">Bugun</span>{% endif %}
+            </div>
+            <div class="day-dt">{{ day.date|date:"d.m.Y" }}</div>
+          </div>
+          {% if day.lessons %}
+          <div class="day-lessons">
+            {% for lesson in day.lessons %}
+            <div class="lcard {{ lesson.rang_class }}"
+                 onclick="openModal(this)"
+                 data-modul="{{ lesson.modul|escapejs }}"
+                 data-vaqt="{{ lesson.vaqt }}"
+                 data-para="{{ lesson.para }}"
+                 data-tur="{{ lesson.tur }}"
+                 data-teacher="{{ lesson.oqituvchi|escapejs }}"
+                 data-xona="{{ lesson.xona }}"
+                 data-sana="{{ day.date|date:'d.m.Y' }}"
+                 data-kun="{{ day.day_name }}"
+                 data-mc="{{ lesson.rang_class }}">
+              <div class="lc-row">
+                <span class="lc-para">{% if lesson.para %}{{ lesson.para }}{% else %}—{% endif %}</span>
+                <span class="lc-time">{{ lesson.vaqt }}</span>
+              </div>
+              <div class="lc-mod">{{ lesson.modul }}</div>
+              {% if lesson.oqituvchi %}<div class="lc-teacher">👤 {{ lesson.oqituvchi }}</div>{% endif %}
+              {% if lesson.xona %}<div class="lc-room">📍 {{ lesson.xona }}</div>{% endif %}
+              {% if lesson.tur %}
+              <span class="lc-tag {% if 'amaliy' in lesson.tur|lower %}t-am{% elif "ko'chma" in lesson.tur|lower %}t-ko{% else %}t-naz{% endif %}">{{ lesson.tur }}</span>
+              {% endif %}
+              <div class="lc-hint">👆 Batafsil</div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="day-empty">
+            <div class="day-empty-ico">💤</div>
+            <div class="day-empty-txt">Dam olish</div>
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="legend">
+        <span class="leg-ttl">Modullar:</span>
+        <div class="leg"><div class="ldot" style="background:var(--m1)"></div>1-modul</div>
+        <div class="leg"><div class="ldot" style="background:var(--m2)"></div>2-modul</div>
+        <div class="leg"><div class="ldot" style="background:var(--m3)"></div>3-modul</div>
+        <div class="leg"><div class="ldot" style="background:var(--m4)"></div>4-modul</div>
+        <div class="leg"><div class="ldot" style="background:var(--m5)"></div>5-modul</div>
+        <div class="lsep"></div>
+        <div class="leg"><div class="ldot" style="background:var(--accent)"></div>Nazariy</div>
+        <div class="leg"><div class="ldot" style="background:var(--green)"></div>Amaliy</div>
+        <div class="leg"><div class="ldot" style="background:var(--gold)"></div>Ko'chma</div>
+      </div>
+
+      {% elif view_mode == 'kunlik' %}
+      <!-- ═══ KUNLIK ═══ -->
+      <div class="dview">
+        {{ today_kun }}
+
+        {% if today_lessons %}
+        <div class="d-grid">
+          {% for lesson in today_lessons %}
+          <div class="dlcard"
+               onclick="openModal(this)"
+               data-modul="{{ lesson.modul|escapejs }}"
+               data-vaqt="{{ lesson.vaqt }}"
+               data-para="{{ lesson.para }}"
+               data-tur="{{ lesson.tur }}"
+               data-teacher="{{ lesson.oqituvchi|escapejs }}"
+               data-xona="{{ lesson.xona }}"
+               data-sana="{{ today|date:'d.m.Y' }}"
+               data-kun="Bugun"
+               data-mc="{{ lesson.rang_class }}">
+            <div class="dl-bar" style="background:
+              {% if 'mc-1' in lesson.rang_class %}var(--m1)
+              {% elif 'mc-2' in lesson.rang_class %}var(--m2)
+              {% elif 'mc-3' in lesson.rang_class %}var(--m3)
+              {% elif 'mc-4' in lesson.rang_class %}var(--m4)
+              {% elif 'mc-5' in lesson.rang_class %}var(--m5)
+              {% else %}var(--a2){% endif %}">
+            </div>
+            <div class="dl-body">
+              <div class="dl-top">
+                <div class="dl-pt">
+                  <span class="dl-para">{% if lesson.para %}{{ lesson.para }}-para{% else %}Para{% endif %}</span>
+                  <span class="dl-time">{{ lesson.vaqt }}</span>
+                </div>
+                {% if lesson.tur %}
+                <span class="dl-tag {% if 'amaliy' in lesson.tur|lower %}t-am{% elif "ko'chma" in lesson.tur|lower %}t-ko{% else %}t-naz{% endif %}">{{ lesson.tur }}</span>
+                {% endif %}
+              </div>
+              <div class="dl-mod">{{ lesson.modul }}</div>
+              <div class="dl-meta">
+                {% if lesson.oqituvchi %}<div class="dl-teacher">👤 {{ lesson.oqituvchi }}</div>{% endif %}
+                {% if lesson.xona %}<div class="dl-room">📍 {{ lesson.xona }}</div>{% endif %}
+              </div>
+              <div class="dl-hint">👆 Batafsil ko'rish uchun bosing</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-lessons">
+          <div class="no-lessons-ico">🎉</div>
+          <div class="no-lessons-ttl">Bugun dars yo'q</div>
+          <div style="font-size:12px;color:var(--muted);">Dam oling yoki haftalik jadvalni ko'ring</div>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+    </div><!-- /content -->
+  </div><!-- /right -->
+</div><!-- /layout -->
+
+<!-- ══════════════════════
+     MODAL
+══════════════════════ -->
+<div class="overlay" id="overlay" onclick="handleOvClick(event)">
+  <div class="modal" id="modal">
+    <div class="m-top">
+      <div>
+        <div class="m-badge" id="mBadge">📚 Dars tafsiloti</div>
+        <div class="m-modul" id="mModul">—</div>
+      </div>
+      <button class="m-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="m-body">
+      <div class="m-row">
+        <div class="minfo">
+          <div class="minfo-ico">🕐</div>
+          <div class="minfo-lbl">Vaqt</div>
+          <div class="minfo-val" id="mVaqt">—</div>
+        </div>
+        <div class="minfo">
+          <div class="minfo-ico">📋</div>
+          <div class="minfo-lbl">Para</div>
+          <div class="minfo-val" id="mPara">—</div>
+        </div>
+        <div class="minfo">
+          <div class="minfo-ico">👤</div>
+          <div class="minfo-lbl">O'qituvchi</div>
+          <div class="minfo-val" id="mTeacher" style="font-size:12px">—</div>
+        </div>
+        <div class="minfo">
+          <div class="minfo-ico">📍</div>
+          <div class="minfo-lbl">Xona</div>
+          <div id="mXona" style="display:inline-flex;align-items:center;gap:5px;background:#dbeafe;color:#1d4ed8;border:1.5px solid rgba(37,99,235,.3);border-radius:8px;padding:5px 14px;font-size:15px;font-weight:900;margin-top:2px;">—</div>
+        </div>
+      </div>
+      <div class="m-row2">
+        <div class="minfo">
+          <div class="minfo-ico">📅</div>
+          <div class="minfo-lbl">Sana</div>
+          <div class="minfo-val" id="mSana">—</div>
+        </div>
+        <div class="minfo">
+          <div class="minfo-ico">🎯</div>
+          <div class="minfo-lbl">Dars turi</div>
+          <div><span class="m-tur-tag t-naz" id="mTur">—</span></div>
+        </div>
+      </div>
+      <div class="timer-wrap">
+        <span class="timer-lbl">Avtomatik yopiladi:</span>
+        <div class="timer-bg"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+        <span class="timer-num" id="timerNum">30</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── SOAT ── */
+const DAYS = ['Yakshanba','Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
+const MONTHS = ['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentabr','Oktabr','Noyabr','Dekabr'];
+function tick() {
+  const n = new Date();
+  document.getElementById('clock').textContent =
+    n.getHours().toString().padStart(2,'0') + ':' + n.getMinutes().toString().padStart(2,'0');
+  document.getElementById('cdate').textContent =
+    DAYS[n.getDay()] + ' · ' + n.getDate() + ' ' + MONTHS[n.getMonth()];
+}
+tick(); setInterval(tick, 1000);
+
+/* ── MOBILE SIDEBAR ── */
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const bd = document.getElementById('sbBackdrop');
+  const open = sb.classList.toggle('sb-open');
+  bd.classList.toggle('open', open);
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('sb-open');
+  document.getElementById('sbBackdrop').classList.remove('open');
+}
+
+/* ── QIDIRUV ── */
+function filterGroups() {
+  const q = document.getElementById('sbSearch').value.toLowerCase();
+  document.querySelectorAll('.sb-item').forEach(el => {
+    el.style.display = el.dataset.name.includes(q) ? '' : 'none';
+  });
+}
+
+/* ── MODAL ── */
+let timerIv = null, timerLeft = 30;
+const TOTAL = 30;
+const MC = { 'mc-1':'var(--m1)', 'mc-2':'var(--m2)', 'mc-3':'var(--m3)', 'mc-4':'var(--m4)', 'mc-5':'var(--m5)', 'mc-0':'var(--a2)' };
+
+function openModal(el) {
+  const d = el.dataset;
+  const color = MC[d.mc] || 'var(--accent)';
+
+  document.getElementById('mBadge').textContent = '📚 ' + d.kun + ' — ' + d.sana;
+  document.getElementById('mModul').textContent = d.modul;
+  document.getElementById('mVaqt').textContent = d.vaqt || '—';
+  document.getElementById('mPara').textContent = d.para ? d.para + '-para' : '—';
+  document.getElementById('mTeacher').textContent = d.teacher || '—';
+  document.getElementById('mXona').textContent = d.xona || '—';
+  document.getElementById('mSana').textContent = d.sana + ', ' + d.kun;
+
+  const tur = d.tur || '';
+  const turEl = document.getElementById('mTur');
+  turEl.textContent = tur || '—';
+  turEl.className = 'm-tur-tag ' + (
+    tur.toLowerCase().includes('amaliy') ? 't-am' :
+    (tur.toLowerCase().includes("ko'chma") || tur.toLowerCase().includes('kochma')) ? 't-ko' :
+    't-naz'
+  );
+
+  document.getElementById('modal').style.borderColor = color;
+  document.getElementById('overlay').classList.add('open');
+  resetTimer();
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  clearInterval(timerIv);
+}
+
+function handleOvClick(e) {
+  if (e.target === document.getElementById('overlay')) closeModal();
+}
+
+function resetTimer() {
+  clearInterval(timerIv);
+  timerLeft = TOTAL;
+  updTimer();
+  timerIv = setInterval(() => {
+    timerLeft--;
+    updTimer();
+    if (timerLeft <= 0) { clearInterval(timerIv); closeModal(); }
+  }, 1000);
+}
+
+function updTimer() {
+  document.getElementById('timerNum').textContent = timerLeft;
+  const fill = document.getElementById('timerFill');
+  const num = document.getElementById('timerNum');
+  fill.style.width = (timerLeft / TOTAL * 100) + '%';
+  if (timerLeft <= 8) {
+    fill.style.background = 'linear-gradient(90deg,var(--red),#ff8a65)';
+    num.style.color = 'var(--red)';
+  } else if (timerLeft <= 15) {
+    fill.style.background = 'linear-gradient(90deg,var(--gold),var(--accent))';
+    num.style.color = 'var(--gold)';
+  } else {
+    fill.style.background = 'linear-gradient(90deg,var(--accent),var(--a2))';
+    num.style.color = 'var(--accent)';
+  }
+}
+
+document.getElementById('modal').addEventListener('click', resetTimer);
+
+/* aktiv elementni ko'rinishga keltirish */
+const activeItem = document.querySelector('.sb-item.active');
+if (activeItem) activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+</script>
+</body>
+</html>

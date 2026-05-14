@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>Yangi Jadval Yuklash — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f5f9;--s:#ffffff;--s2:#f8fafc;--s3:#f1f5f9;--bd:#e2e8f0;--ac:#2563eb;--a2:#1d4ed8;--text:#0f172a;--mt:#64748b;--green:#059669;--red:#dc2626;--gold:#d97706;--r:14px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+header{background:rgba(255,255,255,.98);border-bottom:1px solid var(--bd);padding:0 36px;height:68px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:var(--ac);}
+.btn{padding:9px 20px;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s;border:1.5px solid transparent;}
+.btn-out{background:var(--s2);border-color:var(--bd);color:var(--mt);}
+.btn-out:hover{border-color:var(--ac);color:var(--ac);}
+.btn-pri{background:linear-gradient(135deg,var(--a2),var(--ac));color:#fff;border:none;}
+.btn-pri:hover{opacity:.88;}
+main{max-width:820px;margin:0 auto;padding:44px 24px;}
+.ptitle{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:5px;margin-bottom:6px;color:var(--text);}
+.psub{color:var(--mt);font-size:14px;margin-bottom:36px;font-weight:400;}
+
+/* Step cards */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:36px;}
+.step{background:var(--s);border:1.5px solid var(--bd);border-radius:var(--r);padding:20px 22px;box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.step-num{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;color:var(--ac);margin-bottom:6px;}
+.step-title{font-size:14px;font-weight:800;margin-bottom:4px;color:var(--text);}
+.step-sub{font-size:12px;color:var(--mt);}
+
+/* Messages */
+.msgs{margin-bottom:20px;display:flex;flex-direction:column;gap:8px;}
+.msg{padding:12px 18px;border-radius:12px;font-size:13px;font-weight:700;display:flex;align-items:flex-start;gap:10px;}
+.msg-s{background:#f0fdf4;border:1px solid rgba(5,150,105,.3);color:var(--green);}
+.msg-e{background:#fef2f2;border:1px solid rgba(220,38,38,.3);color:var(--red);}
+.msg-w{background:#fffbeb;border:1px solid rgba(217,119,6,.3);color:var(--gold);}
+
+.card{background:var(--s);border:1.5px solid var(--bd);border-radius:20px;overflow:hidden;margin-bottom:20px;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+.card-head{padding:20px 28px;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:14px;}
+.card-icon{font-size:28px;}
+.card-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--text);}
+.card-sub{font-size:12px;color:var(--mt);margin-top:2px;}
+.card-body{padding:28px;}
+
+/* Drop zone */
+.dz{
+  border:2px dashed var(--bd);border-radius:16px;padding:52px;
+  text-align:center;cursor:pointer;transition:all .22s;
+  background:var(--s3);
+}
+.dz:hover,.dz.drag{border-color:var(--ac);background:#eff6ff;}
+.dz-ico{font-size:56px;margin-bottom:16px;}
+.dz-title{font-size:20px;font-weight:900;margin-bottom:8px;color:var(--text);}
+.dz-sub{font-size:14px;color:var(--mt);margin-bottom:18px;}
+.dz-fmt{font-size:12px;color:var(--mt);background:var(--s);border:1px solid var(--bd);border-radius:8px;display:inline-block;padding:5px 16px;}
+input[type=file]{display:none;}
+
+.selected{display:none;align-items:center;gap:14px;margin-top:20px;
+  background:#f0fdf4;border:1.5px solid rgba(5,150,105,.25);
+  border-radius:12px;padding:14px 20px;}
+.sel-ico{font-size:28px;}
+.sel-name{font-weight:800;font-size:15px;color:var(--text);}
+.sel-size{font-size:12px;color:var(--mt);margin-top:2px;}
+
+.sheets-preview{margin-top:20px;display:none;}
+.sp-label{font-size:11px;font-weight:800;color:var(--mt);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;}
+.sp-chips{display:flex;flex-wrap:wrap;gap:8px;}
+.sp-chip{
+  display:flex;align-items:center;gap:7px;padding:7px 14px;
+  background:#eff6ff;border:1px solid rgba(37,99,235,.2);border-radius:100px;font-size:13px;font-weight:700;color:var(--text);
+}
+.sp-chip-dot{width:7px;height:7px;border-radius:50%;background:var(--green);}
+
+.btn-upload{
+  width:100%;padding:18px;margin-top:24px;
+  background:linear-gradient(135deg,var(--a2),var(--ac));
+  border:none;border-radius:14px;color:#fff;
+  font-family:'Nunito',sans-serif;font-size:17px;font-weight:900;
+  cursor:pointer;letter-spacing:.5px;transition:opacity .2s,transform .1s;
+}
+.btn-upload:hover{opacity:.9;}
+.btn-upload:disabled{opacity:.4;cursor:not-allowed;}
+.btn-upload:active{transform:scale(.99);}
+
+/* Schema table */
+.schema{background:var(--s3);border-radius:12px;padding:20px 24px;}
+.schema-title{font-size:12px;font-weight:800;color:var(--mt);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;}
+.schema-row{display:grid;grid-template-columns:120px 1fr;gap:10px;margin-bottom:8px;font-size:13px;}
+.schema-col{background:var(--s);border:1px solid var(--bd);border-radius:8px;padding:8px 12px;font-weight:700;font-family:monospace;font-size:12px;color:var(--ac);}
+.schema-desc{color:var(--text);display:flex;align-items:center;}
+
+/* Group map */
+.gmap{display:flex;flex-direction:column;gap:6px;}
+.gmap-row{display:flex;align-items:center;gap:12px;padding:9px 14px;background:var(--s3);border-radius:10px;font-size:13px;border:1px solid var(--bd);}
+.gmap-sheet{font-family:monospace;color:var(--ac);font-weight:700;min-width:120px;}
+.gmap-arrow{color:var(--mt);}
+.gmap-nom{font-weight:700;color:var(--text);}
+.gmap-ikon{font-size:18px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">📤 YANGI JADVAL YUKLASH</div>
+  <a href="{% url 'admin_panel' %}" class="btn btn-out">← Admin Panelga</a>
+</header>
+
+<main>
+  <div class="ptitle">OMMAVIY YUKLASH</div>
+  <div class="psub">Bitta Excel fayl — barcha guruhlar avtomatik yaratiladi</div>
+
+  {% if messages %}
+  <div class="msgs">
+    {% for msg in messages %}
+    <div class="msg {% if msg.tags == 'success' %}msg-s{% elif msg.tags == 'error' %}msg-e{% else %}msg-w{% endif %}">
+      {% if msg.tags == 'success' %}✅{% elif msg.tags == 'error' %}❌{% else %}⚠️{% endif %} {{ msg }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Steps -->
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Tozalash</div>
+      <div class="step-sub">Oy boshida eski guruh va jadvallarni o'chiring</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Excel yuklash</div>
+      <div class="step-sub">Yangi oyning Excel faylini quyidagi formaga yuklang</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Tayyor!</div>
+      <div class="step-sub">Barcha guruhlar va jadvallar avtomatik yaratiladi</div>
+    </div>
+  </div>
+
+  <!-- Upload card -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon">📂</div>
+      <div>
+        <div class="card-title">EXCEL FAYLNI YUKLANG</div>
+        <div class="card-sub">Har bir varaq = bir guruh jadvali</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form method="post" enctype="multipart/form-data" id="uploadForm">
+        {% csrf_token %}
+        <input type="file" name="excel_file" id="fileInput" accept=".xlsx,.xls">
+
+        <div class="dz" id="dz" onclick="document.getElementById('fileInput').click()">
+          <div class="dz-ico">🗂️</div>
+          <div class="dz-title">Excel faylni shu yerga tashlang yoki tanlang</div>
+          <div class="dz-sub">Barcha guruhlarning dars jadvali bir faylda</div>
+          <div class="dz-fmt">.xlsx &nbsp;·&nbsp; .xls</div>
+        </div>
+
+        <div class="selected" id="selBox">
+          <div class="sel-ico">📄</div>
+          <div>
+            <div class="sel-name" id="selName"></div>
+            <div class="sel-size" id="selSize"></div>
+          </div>
+        </div>
+
+        <div class="sheets-preview" id="sheetsPreview">
+          <div class="sp-label">Fayldan topilgan guruhlar:</div>
+          <div class="sp-chips" id="spChips"></div>
+        </div>
+
+        <button type="submit" class="btn-upload" id="uploadBtn" disabled>
+          📤 Barcha guruhlarni yuklash
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Column schema -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon">📋</div>
+      <div>
+        <div class="card-title">EXCEL FAYL FORMATI</div>
+        <div class="card-sub">Har bir varaqdagi ustunlar tartibi</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="schema">
+        <div class="schema-title">Ustunlar tartibi (A → H)</div>
+        {% for col in schema %}
+        <div class="schema-row">
+          <div class="schema-col">{{ col.0 }}</div>
+          <div class="schema-desc">{{ col.1 }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Sheet → Group mapping -->
+  <div class="card">
+    <div class="card-head">
+      <div class="card-icon">🗺️</div>
+      <div>
+        <div class="card-title">VARAQ → GURUH MOSLIGI</div>
+        <div class="card-sub">Excel varaqi nomi bo'yicha guruh avtomatik aniqlanadi</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="gmap">
+        {% for sheet, info in group_map.items %}
+        <div class="gmap-row">
+          <span class="gmap-sheet">{{ sheet }}</span>
+          <span class="gmap-arrow">→</span>
+          <span class="gmap-ikon">{{ info.ikonka }}</span>
+          <span class="gmap-nom">{{ info.nom }}</span>
+        </div>
+        {% endfor %}
+        <div class="gmap-row" style="border:1px dashed #cbd5e1;">
+          <span class="gmap-sheet">boshqa nom</span>
+          <span class="gmap-arrow">→</span>
+          <span class="gmap-ikon">🎓</span>
+          <span class="gmap-nom" style="color:#64748b">Varaq nomi = guruh nomi (avtomatik)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+const fileInput = document.getElementById('fileInput');
+const dz = document.getElementById('dz');
+const uploadBtn = document.getElementById('uploadBtn');
+const selBox = document.getElementById('selBox');
+const sheetsPreview = document.getElementById('sheetsPreview');
+
+// Known sheets from server-side mapping
+const KNOWN_SHEETS = {{ known_sheets_json|safe }};
+
+fileInput.addEventListener('change', function() {
+  if (this.files[0]) showFile(this.files[0]);
+});
+
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag');
+  const f = e.dataTransfer.files[0];
+  if (f && (f.name.endsWith('.xlsx') || f.name.endsWith('.xls'))) {
+    const dt = new DataTransfer(); dt.items.add(f);
+    fileInput.files = dt.files;
+    showFile(f);
+  }
+});
+
+function showFile(f) {
+  document.getElementById('selName').textContent = f.name;
+  document.getElementById('selSize').textContent = (f.size / 1024).toFixed(0) + ' KB';
+  selBox.style.display = 'flex';
+  uploadBtn.disabled = false;
+  uploadBtn.textContent = '📤 ' + f.name + ' — Barcha guruhlarni yuklash';
+
+  // Show known sheets as chips
+  const chips = document.getElementById('spChips');
+  chips.innerHTML = '';
+  KNOWN_SHEETS.forEach(s => {
+    const c = document.createElement('div');
+    c.className = 'sp-chip';
+    c.innerHTML = `<div class="sp-chip-dot"></div>${s.nom} <span style="color:var(--mt);font-size:11px;">(${s.sheet})</span>`;
+    chips.appendChild(c);
+  });
+  sheetsPreview.style.display = 'block';
+}
+
+document.getElementById('uploadForm').addEventListener('submit', function() {
+  uploadBtn.disabled = true;
+  uploadBtn.textContent = '⏳ Yuklanmoqda... Biroz kuting';
+});
+</script>
+</body>
+</html>

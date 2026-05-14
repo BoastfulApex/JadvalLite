@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>{% if guruh %}Tahrirlash{% else %}Yangi guruh{% endif %} — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f5f9;--s:#ffffff;--s2:#f8fafc;--s3:#f1f5f9;--bd:#e2e8f0;--ac:#2563eb;--a2:#1d4ed8;--text:#0f172a;--mt:#64748b;--r:14px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;}
+header{background:rgba(255,255,255,.98);border-bottom:1px solid var(--bd);padding:0 36px;height:68px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:var(--ac);}
+.btn{padding:9px 20px;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .2s;border:1.5px solid transparent;}
+.btn-out{background:var(--s2);border-color:var(--bd);color:var(--mt);}
+.btn-out:hover{border-color:var(--ac);color:var(--ac);}
+.btn-pri{background:linear-gradient(135deg,var(--a2),var(--ac));color:#fff;border:none;}
+.btn-pri:hover{opacity:.88;}
+main{max-width:720px;margin:0 auto;padding:40px 24px;}
+.ptitle{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:4px;margin-bottom:4px;color:var(--text);}
+.psub{color:var(--mt);font-size:13px;margin-bottom:32px;font-weight:400;}
+.card{background:var(--s);border:1.5px solid var(--bd);border-radius:20px;padding:36px;margin-bottom:20px;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+.fg{margin-bottom:26px;}
+label{display:block;font-size:11px;font-weight:800;color:var(--mt);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+input[type=text],input[type=number]{width:100%;padding:13px 16px;background:var(--s3);border:1.5px solid var(--bd);border-radius:12px;color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+input:focus{border-color:var(--ac);}
+
+/* PREVIEW */
+.preview{display:flex;align-items:center;gap:14px;background:var(--s3);border:1.5px solid var(--bd);border-radius:14px;padding:16px 20px;margin-bottom:30px;}
+.prev-icon{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--s2);border:1.5px solid var(--bd);overflow:hidden;flex-shrink:0;}
+.prev-icon img{width:100%;height:100%;object-fit:cover;}
+.prev-name{font-weight:800;font-size:16px;color:var(--text);}
+.prev-sub{font-size:12px;color:var(--mt);margin-top:3px;}
+.prev-dot{width:14px;height:14px;border-radius:5px;margin-left:auto;flex-shrink:0;}
+
+/* ICONS */
+.icons-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.icon-inp{display:none;}
+.icon-lbl{width:48px;height:48px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:26px;background:var(--s3);border:2px solid transparent;transition:all .15s;}
+.icon-inp:checked+.icon-lbl{border-color:var(--ac);background:#eff6ff;box-shadow:0 0 0 2px rgba(37,99,235,.2);}
+.icon-lbl:hover{border-color:var(--bd);transform:scale(1.1);}
+
+/* COLORS */
+.colors-grid{display:flex;flex-wrap:wrap;gap:9px;}
+.color-inp{display:none;}
+.color-lbl{width:38px;height:38px;border-radius:10px;cursor:pointer;border:3px solid transparent;transition:all .15s;}
+.color-inp:checked+.color-lbl{border-color:#1e293b;transform:scale(1.18);box-shadow:0 0 0 3px rgba(30,41,59,.2);}
+
+/* IMAGE UPLOAD */
+.img-upload-zone{
+  border:2px dashed var(--bd);border-radius:14px;padding:28px;
+  text-align:center;cursor:pointer;transition:all .2s;background:var(--s3);
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.img-upload-zone:hover{border-color:var(--ac);background:#eff6ff;}
+.img-upload-zone.has-img{border-color:rgba(5,150,105,.4);border-style:solid;}
+.img-preview-box{
+  width:80px;height:80px;border-radius:16px;overflow:hidden;
+  border:2px solid var(--bd);display:none;
+}
+.img-preview-box img{width:100%;height:100%;object-fit:cover;}
+.img-clear{
+  display:none;background:#fef2f2;border:1.5px solid rgba(220,38,38,.3);
+  color:#dc2626;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;
+  cursor:pointer;font-family:'Nunito',sans-serif;
+}
+.img-note{font-size:11px;color:var(--mt);}
+
+/* existing img */
+.existing-img{display:flex;align-items:center;gap:14px;background:var(--s3);border:1.5px solid var(--bd);border-radius:12px;padding:14px 18px;margin-bottom:12px;}
+.existing-img img{width:52px;height:52px;border-radius:10px;object-fit:cover;}
+.existing-txt{font-size:13px;font-weight:700;color:var(--text);}
+.existing-sub{font-size:11px;color:var(--mt);margin-top:3px;}
+.ochir-lbl{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:#dc2626;font-weight:700;margin-top:8px;}
+
+.form-footer{display:flex;gap:12px;justify-content:flex-end;margin-top:8px;}
+input[type=file]{display:none;}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">⚙️ ADMIN PANEL</div>
+  <a href="{% url 'admin_panel' %}" class="btn btn-out">← Orqaga</a>
+</header>
+
+<main>
+  <div class="ptitle">{% if guruh %}GURUHNI TAHRIRLASH{% else %}YANGI GURUH{% endif %}</div>
+  <div class="psub">Ma'lumotlarni to'ldiring{% if not guruh %}, keyin Excel jadval yuklanadi{% endif %}</div>
+
+  <!-- Preview -->
+  <div class="preview" id="preview">
+    <div class="prev-icon" id="prevIcon">{% if guruh and guruh.ikonka_rasm %}<img id="prevImg" src="{{ guruh.ikonka_rasm.url }}">{% else %}<span id="prevEmoji">{{ guruh.ikonka|default:"🎓" }}</span>{% endif %}</div>
+    <div>
+      <div class="prev-name" id="prevName">{{ guruh.nom|default:"Guruh nomi" }}</div>
+      <div class="prev-sub">Ko'rinish namunasi</div>
+    </div>
+    <div class="prev-dot" id="prevDot" style="background:{{ guruh.rang|default:'#38bdf8' }}"></div>
+  </div>
+
+  <div class="card">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="fg">
+        <label>Guruh nomi *</label>
+        <input type="text" name="nom" id="nomInp" value="{{ guruh.nom|default:'' }}" placeholder="Masalan: Futbol-1 yoki Rahbarlar" required>
+      </div>
+
+      <!-- IMAGE UPLOAD -->
+      <div class="fg">
+        <label>Guruh ikonkasi — rasm yuklash (ixtiyoriy)</label>
+
+        {% if guruh and guruh.ikonka_rasm %}
+        <div class="existing-img">
+          <img src="{{ guruh.ikonka_rasm.url }}" alt="">
+          <div>
+            <div class="existing-txt">Hozirgi rasm</div>
+            <div class="existing-sub">Yangi rasm yuklasangiz almashadi</div>
+            <label class="ochir-lbl">
+              <input type="checkbox" name="ikonka_rasm_ochir" value="1" style="display:none" id="ochirChk" onchange="handleOchir(this)">
+              <span id="ochirTxt">🗑 Rasmni o'chirish</span>
+            </label>
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="img-upload-zone" id="imgZone" onclick="document.getElementById('imgInp').click()">
+          <div class="img-preview-box" id="imgPreviewBox">
+            <img id="imgPreviewEl" src="" alt="">
+          </div>
+          <div style="font-size:36px;">🖼️</div>
+          <div style="font-size:15px;font-weight:800;">Rasm yuklash</div>
+          <div class="img-note">PNG, JPG, SVG · Tavsiya: 128×128 px yoki kvadrat</div>
+          <button type="button" class="img-clear" id="imgClearBtn" onclick="clearImg(event)">✕ O'chirish</button>
+        </div>
+        <input type="file" name="ikonka_rasm" id="imgInp" accept="image/*" onchange="handleImgChange(this)">
+      </div>
+
+      <!-- EMOJI ICONS -->
+      <div class="fg">
+        <label>Yoki emoji tanlang</label>
+        <div class="icons-grid">
+          {% for icon in icons %}
+          <input type="radio" name="ikonka" value="{{ icon }}" id="ic{{ forloop.counter }}" class="icon-inp"
+            {% if guruh.ikonka == icon %}checked{% elif not guruh and forloop.first %}checked{% endif %}>
+          <label for="ic{{ forloop.counter }}" class="icon-lbl" onclick="setEmoji('{{ icon }}')">{{ icon }}</label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- COLORS -->
+      <div class="fg">
+        <label>Guruh rangi</label>
+        <div class="colors-grid">
+          {% for c in colors %}
+          <input type="radio" name="rang" value="{{ c }}" id="cl{{ forloop.counter }}" class="color-inp"
+            {% if guruh.rang == c %}checked{% elif not guruh and forloop.first %}checked{% endif %}>
+          <label for="cl{{ forloop.counter }}" class="color-lbl" style="background:{{ c }}" onclick="setColor('{{ c }}')"></label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="fg">
+        <label>Tartib raqami</label>
+        <input type="number" name="tartib" value="{{ guruh.tartib|default:0 }}" min="0" style="width:140px">
+        <div style="font-size:11px;color:var(--mt);margin-top:6px;">Kichik son = ro'yxatda yuqorida</div>
+      </div>
+
+      <div class="form-footer">
+        <a href="{% url 'admin_panel' %}" class="btn btn-out">Bekor qilish</a>
+        <button type="submit" class="btn btn-pri">
+          {% if guruh %}✓ Saqlash{% else %}Keyingisi → Excel Yuklash{% endif %}
+        </button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<script>
+let selColor='{{ guruh.rang|default:"#38bdf8" }}';
+
+document.getElementById('nomInp').addEventListener('input',function(){
+  document.getElementById('prevName').textContent=this.value||'Guruh nomi';
+});
+
+function setEmoji(e){
+  const el=document.getElementById('prevEmoji');
+  const pi=document.getElementById('imgPreviewBox');
+  if(el){ el.textContent=e; }
+  else {
+    // if img was showing, show emoji fallback next to img (don't replace img)
+  }
+}
+
+function setColor(c){
+  selColor=c;
+  document.getElementById('prevDot').style.background=c;
+}
+
+function handleImgChange(inp){
+  if(!inp.files[0]) return;
+  const url=URL.createObjectURL(inp.files[0]);
+  // Preview in zone
+  document.getElementById('imgPreviewBox').style.display='block';
+  document.getElementById('imgPreviewEl').src=url;
+  document.getElementById('imgClearBtn').style.display='inline-block';
+  document.getElementById('imgZone').classList.add('has-img');
+  // Update main preview icon
+  const pi=document.getElementById('prevIcon');
+  let img=pi.querySelector('#prevImg');
+  if(!img){img=document.createElement('img');img.id='prevImg';pi.innerHTML='';pi.appendChild(img);}
+  img.src=url;
+}
+
+function clearImg(e){
+  e.stopPropagation();
+  document.getElementById('imgInp').value='';
+  document.getElementById('imgPreviewBox').style.display='none';
+  document.getElementById('imgClearBtn').style.display='none';
+  document.getElementById('imgZone').classList.remove('has-img');
+}
+
+function handleOchir(chk){
+  const txt=document.getElementById('ochirTxt');
+  if(chk.checked){
+    txt.textContent='✓ Rasm o\'chiriladi (saqlanganda)';
+    txt.style.color='var(--mt)';
+    // Clear preview
+    const pi=document.getElementById('prevIcon');
+    pi.innerHTML='<span id="prevEmoji">🎓</span>';
+  } else {
+    txt.textContent='🗑 Rasmni o\'chirish';
+    txt.style.color='#f87171';
+  }
+}
+</script>
+</body>
+</html>

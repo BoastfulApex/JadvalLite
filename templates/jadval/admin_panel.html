@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel — Dars Jadvali</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Mulish:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f1f5f9; --surface:#ffffff; --surface2:#f8fafc; --s3:#f1f5f9;
+  --border:#e2e8f0; --accent:#2563eb; --accent2:#1d4ed8;
+  --gold:#d97706; --text:#0f172a; --muted:#64748b;
+  --green:#059669; --red:#dc2626; --radius:14px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:var(--bg); color:var(--text);
+  font-family:'Mulish',sans-serif; min-height:100vh;
+}
+header {
+  background:rgba(255,255,255,0.98); border-bottom:1px solid var(--border);
+  padding:0 36px; height:68px;
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:100;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.logo { display:flex; align-items:center; gap:12px; }
+.logo-box {
+  width:40px; height:40px; background:linear-gradient(135deg,var(--accent2),var(--accent));
+  border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:20px;
+}
+.logo-title {
+  font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:3px; color:var(--accent);
+}
+.logo-sub { font-size:10px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; }
+.header-right { display:flex; align-items:center; gap:12px; }
+.btn { padding:9px 20px; border-radius:10px; font-family:'Mulish',sans-serif; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s; letter-spacing:0.5px; border:1px solid transparent; }
+.btn-primary { background:linear-gradient(135deg,var(--accent2),var(--accent)); color:#fff; }
+.btn-primary:hover { opacity:0.85; }
+.btn-outline { background:var(--surface2); border-color:var(--border); color:var(--muted); }
+.btn-outline:hover { border-color:var(--accent); color:var(--accent); }
+.btn-danger { background:#fef2f2; border-color:rgba(220,38,38,0.3); color:var(--red); }
+.btn-danger:hover { background:#fee2e2; }
+.btn-sm { padding:6px 14px; font-size:12px; border-radius:8px; }
+
+main { max-width:1100px; margin:0 auto; padding:36px 24px; }
+
+.page-title { font-family:'Bebas Neue',sans-serif; font-size:40px; letter-spacing:4px; margin-bottom:6px; color:var(--text); }
+.page-sub { color:var(--muted); font-size:13px; margin-bottom:32px; font-weight:400; }
+
+.messages-wrap { margin-bottom:20px; display:flex; flex-direction:column; gap:8px; }
+.msg {
+  padding:12px 18px; border-radius:12px; font-size:13px; font-weight:600;
+  display:flex; align-items:center; gap:10px;
+}
+.msg-success { background:#f0fdf4; border:1px solid rgba(5,150,105,0.3); color:var(--green); }
+.msg-error { background:#fef2f2; border:1px solid rgba(220,38,38,0.3); color:var(--red); }
+.msg-info { background:#eff6ff; border:1px solid rgba(37,99,235,0.3); color:var(--accent); }
+
+.stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
+.stat-card {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:20px 24px; display:flex; align-items:center; gap:16px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.stat-icon { font-size:32px; }
+.stat-val { font-family:'Bebas Neue',sans-serif; font-size:36px; color:var(--accent); letter-spacing:2px; }
+.stat-label { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; font-weight:600; }
+
+.section-head {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px;
+}
+.section-title { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:3px; color:var(--muted); }
+
+.groups-table {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.table-head {
+  display:grid; grid-template-columns: 60px 1fr 80px 120px 180px 160px;
+  padding:12px 20px; border-bottom:1px solid var(--border);
+  font-size:10px; font-weight:800; color:var(--muted);
+  letter-spacing:2px; text-transform:uppercase;
+  background:var(--surface2);
+}
+.table-row {
+  display:grid; grid-template-columns: 60px 1fr 80px 120px 180px 160px;
+  padding:14px 20px; border-bottom:1px solid var(--border);
+  align-items:center; transition:background 0.15s;
+}
+.table-row:last-child { border-bottom:none; }
+.table-row:hover { background:var(--surface2); }
+
+.row-icon {
+  width:38px; height:38px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; background:var(--s3); border:1px solid var(--border);
+}
+.row-name { font-weight:700; font-size:14px; color:var(--text); }
+.row-count { font-size:12px; color:var(--muted); }
+.row-rang { display:flex; align-items:center; gap:8px; }
+.rang-dot { width:16px; height:16px; border-radius:5px; }
+.rang-hex { font-size:11px; color:var(--muted); font-family:monospace; }
+.row-actions { display:flex; gap:6px; }
+
+.empty-table {
+  padding:60px; text-align:center; color:var(--muted);
+}
+.empty-table-icon { font-size:48px; margin-bottom:12px; opacity:0.4; }
+
+.kiosk-link-bar {
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:18px 24px; display:flex; align-items:center; gap:16px; margin-bottom:28px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.kiosk-link-label { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; font-weight:700; }
+.kiosk-url {
+  flex:1; font-family:monospace; font-size:13px;
+  background:#eff6ff; border:1px solid rgba(37,99,235,.2); border-radius:8px;
+  padding:8px 14px; color:var(--accent); font-weight:700;
+}
+
+.monthly-actions {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;
+}
+.ma-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 22px 26px;
+  display: flex; align-items: center; gap: 18px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.ma-card.ma-danger { border-color: rgba(220,38,38,.25); background: #fff5f5; }
+.ma-card.ma-primary { border-color: rgba(37,99,235,.25); background: #f0f5ff; }
+.ma-icon { font-size: 34px; flex-shrink: 0; }
+.ma-texts { flex: 1; }
+.ma-title { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; margin-bottom: 4px; color:var(--text); }
+.ma-sub { font-size: 12px; color: var(--muted); font-weight: 400; }
+.ma-btn {
+  padding: 12px 22px; border-radius: 11px; font-family: 'Mulish', sans-serif;
+  font-size: 14px; font-weight: 800; cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; white-space: nowrap; border: none;
+  transition: all .2s; letter-spacing: .5px;
+}
+.ma-btn-red { background: #fef2f2; color: var(--red); border: 1.5px solid rgba(220,38,38,.3); }
+.ma-btn-red:hover { background: #fee2e2; }
+.ma-btn-blue { background: linear-gradient(135deg, var(--accent2), var(--accent)); color: #fff; }
+.ma-btn-blue:hover { opacity: .88; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="logo-box">⚙️</div>
+    <div>
+      <div class="logo-title">ADMIN PANEL</div>
+      <div class="logo-sub">Jadval boshqaruvi tizimi</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="/" class="btn btn-outline">👁 Kioskni Ko'rish</a>
+    <a href="{% url 'guruh_create' %}" class="btn btn-primary">+ Yangi Guruh</a>
+    <a href="{% url 'admin_logout' %}" class="btn btn-outline btn-sm">Chiqish</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">BOSHQARUV PANELI</div>
+  <div class="page-sub">Guruhlarni yarating, Excel jadvallarini yuklang</div>
+
+  {% if messages %}
+  <div class="messages-wrap">
+    {% for msg in messages %}
+    <div class="msg msg-{% if msg.tags == 'error' %}error{% elif msg.tags == 'info' %}info{% else %}success{% endif %}">
+      {% if msg.tags == 'success' %}✅{% elif msg.tags == 'error' %}❌{% else %}ℹ️{% endif %}
+      {{ msg }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Monthly actions -->
+  <div class="monthly-actions">
+    <div class="ma-card ma-danger">
+      <div class="ma-icon">🗑️</div>
+      <div class="ma-texts">
+        <div class="ma-title">OY BOSHI: TOZALASH</div>
+        <div class="ma-sub">Barcha {{ guruhlar.count }} ta guruh va darslarni o'chirish</div>
+      </div>
+      <form method="post" action="{% url 'clear_all' %}" onsubmit="return confirm('⚠️ Hamma guruh va darslar o\'chiriladi! Davom etasizmi?')">
+        {% csrf_token %}
+        <button type="submit" class="ma-btn ma-btn-red">Tozalash →</button>
+      </form>
+    </div>
+    <div class="ma-card ma-primary">
+      <div class="ma-icon">📤</div>
+      <div class="ma-texts">
+        <div class="ma-title">YANGI OY: JADVAL YUKLASH</div>
+        <div class="ma-sub">Bitta Excel fayldan barcha guruhlar avtomatik yaratiladi</div>
+      </div>
+      <a href="{% url 'bulk_upload' %}" class="ma-btn ma-btn-blue">Yuklash →</a>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div>
+        <div class="stat-val">{{ guruhlar.count }}</div>
+        <div class="stat-label">Jami guruhlar</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📚</div>
+      <div>
+        <div class="stat-val">{{ total_dars }}</div>
+        <div class="stat-label">Jami darslar</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🌐</div>
+      <div>
+        <div class="stat-val">Jonli</div>
+        <div class="stat-label">Kiosk holati</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kiosk link -->
+  <div class="kiosk-link-bar">
+    <div class="kiosk-link-label">Kiosk URL</div>
+    <div class="kiosk-url">http://localhost:8000/</div>
+    <a href="/" target="_blank" class="btn btn-outline btn-sm">Ochish →</a>
+  </div>
+
+  <!-- Groups table -->
+  <div class="section-head">
+    <div class="section-title">GURUHLAR RO'YXATI</div>
+    <a href="{% url 'guruh_create' %}" class="btn btn-primary btn-sm">+ Yangi Guruh</a>
+  </div>
+
+  <div class="groups-table">
+    <div class="table-head">
+      <div>IKONKA</div>
+      <div>GURUH NOMI</div>
+      <div>DARSLAR</div>
+      <div>RANG</div>
+      <div>EXCEL JADVAL</div>
+      <div>AMALLAR</div>
+    </div>
+
+    {% for guruh in guruhlar %}
+    <div class="table-row">
+      <div><div class="row-icon">{{ guruh.ikonka }}</div></div>
+      <div>
+        <div class="row-name">{{ guruh.nom }}</div>
+        <div class="row-count">Tartib: {{ guruh.tartib }}</div>
+      </div>
+      <div>
+        <div class="row-name">{{ guruh.darslar.count }}</div>
+        <div class="row-count">ta dars</div>
+      </div>
+      <div class="row-rang">
+        <div class="rang-dot" style="background:{{ guruh.rang }}"></div>
+        <span class="rang-hex">{{ guruh.rang }}</span>
+      </div>
+      <div>
+        <a href="{% url 'guruh_excel_upload' guruh.pk %}" class="btn btn-outline btn-sm">
+          📤 Excel Yuklash
+        </a>
+      </div>
+      <div class="row-actions">
+        <a href="{% url 'guruh_edit' guruh.pk %}" class="btn btn-outline btn-sm">✏️</a>
+        <form method="post" action="{% url 'guruh_delete' guruh.pk %}"
+              onsubmit="return confirm('{{ guruh.nom }} guruhini o\'chirmoqchimisiz?')">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger btn-sm">🗑</button>
+        </form>
+      </div>
+    </div>
+    {% empty %}
+    <div class="empty-table">
+      <div class="empty-table-icon">📭</div>
+      <div>Hali guruhlar yaratilmagan</div>
+      <a href="{% url 'guruh_create' %}" class="btn btn-primary" style="margin-top:16px;display:inline-flex">+ Birinchi guruhni yarating</a>
+    </div>
+    {% endfor %}
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dars Jadvali</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #f0f4f8;
+  --card:   #ffffff;
+  --card2:  #f1f5f9;
+  --border: #e2e8f0;
+  --accent: #2563eb;
+  --a2:     #1d4ed8;
+  --text:   #0f172a;
+  --muted:  #64748b;
+  --green:  #059669;
+  --gold:   #d97706;
+  --red:    #dc2626;
+  --m1: #2563eb; --m2: #059669; --m3: #d97706; --m4: #dc2626; --m5: #7c3aed;
+  --r: 16px;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%; min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════
+   GURUH TANLASH SAHIFASI
+══════════════════════ */
+.select-page {
+  min-height: 100dvh;
+  display: flex; flex-direction: column;
+}
+
+.sel-header {
+  background: var(--card);
+  border-bottom: 1.5px solid var(--border);
+  padding: 20px 18px 14px;
+  position: sticky; top: 0; z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.sel-logo {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+.sel-logo-box {
+  width: 44px; height: 44px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--a2), var(--accent));
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+  flex-shrink: 0;
+}
+.sel-app-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px; letter-spacing: 3px; color: var(--accent);
+}
+.sel-app-sub { font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-top: 1px; }
+
+.sel-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 30px; letter-spacing: 3px; color: var(--text); margin-bottom: 14px;
+}
+
+.sel-search {
+  width: 100%; padding: 15px 18px;
+  background: var(--card2); border: 1.5px solid var(--border); border-radius: 14px;
+  color: var(--text); font-family: 'Nunito', sans-serif; font-size: 17px; outline: none;
+  transition: border-color .2s;
+}
+.sel-search:focus { border-color: var(--accent); }
+.sel-search::placeholder { color: var(--muted); }
+
+.sel-body { flex: 1; padding: 14px 14px 80px; overflow-y: auto; }
+
+.sel-count {
+  font-size: 11px; font-weight: 800; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 2px; padding: 0 4px 10px;
+}
+
+.sel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.g-card {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: var(--r); padding: 16px 14px;
+  text-decoration: none; color: var(--text);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  transition: all .15s; text-align: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  -webkit-tap-highlight-color: transparent;
+}
+.g-card:active { transform: scale(.96); }
+
+.g-ikon {
+  width: 66px; height: 66px; border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px; overflow: hidden;
+  border: 2px solid transparent;
+}
+.g-ikon img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
+
+.g-name {
+  font-size: 15px; font-weight: 800; line-height: 1.3;
+  color: var(--text);
+}
+.g-cnt {
+  font-size: 13px; color: var(--muted); font-weight: 600;
+}
+.g-dot {
+  width: 28px; height: 4px; border-radius: 2px; margin-top: 2px;
+}
+
+.sel-bottom {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  padding: 12px 16px;
+  background: rgba(240,244,248,.95); border-top: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px; color: var(--muted);
+  z-index: 10;
+}
+.sel-bottom a { color: var(--muted); text-decoration: none; font-size: 20px; opacity: .6; }
+
+/* ══════════════════════
+   JADVAL SAHIFASI
+══════════════════════ */
+.jadval-page {
+  min-height: 100dvh;
+  display: flex; flex-direction: column;
+}
+
+/* Header */
+.j-header {
+  background: var(--card);
+  border-bottom: 1.5px solid var(--border);
+  padding: 14px 16px;
+  position: sticky; top: 0; z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.j-hdr-top {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 12px;
+}
+.j-back {
+  width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+  background: var(--card2); border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; text-decoration: none; color: var(--accent);
+  transition: all .15s;
+}
+.j-back:active { transform: scale(.92); }
+.j-guruh-info { flex: 1; min-width: 0; }
+.j-guruh-ikon {
+  width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 16px; overflow: hidden;
+  background: var(--card2); border: 1px solid var(--border);
+  float: left; margin-right: 9px;
+}
+.j-guruh-ikon img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+.j-guruh-nom {
+  font-size: 17px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.j-guruh-sub { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+/* Hafta tanlash */
+.j-weeks {
+  display: flex; gap: 7px; overflow-x: auto; padding-bottom: 2px;
+}
+.j-weeks::-webkit-scrollbar { display: none; }
+.j-wbtn {
+  padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 700;
+  white-space: nowrap; text-decoration: none;
+  border: 1.5px solid var(--border); color: var(--muted); background: var(--card2);
+  transition: all .15s; flex-shrink: 0;
+}
+.j-wbtn.on {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+  box-shadow: 0 3px 10px rgba(37,99,235,.3);
+}
+
+/* Days horizontal scroll */
+.j-body { flex: 1; overflow: hidden; }
+
+.days-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  height: calc(100dvh - var(--hdr-h, 130px));
+  overscroll-behavior-x: contain;
+}
+.days-scroll::-webkit-scrollbar { display: none; }
+
+.day-panel {
+  min-width: 100vw; width: 100vw;
+  scroll-snap-align: start;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+
+.day-label {
+  padding: 10px 16px 8px;
+  background: var(--card2); border-bottom: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.day-label.today-lbl {
+  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+  border-bottom-color: #1d4ed8;
+}
+.day-nm {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 2px; color: var(--accent);
+}
+.day-label.today-lbl .day-nm { color: #fff; }
+.day-dt { font-size: 14px; color: var(--muted); font-weight: 700; }
+.day-label.today-lbl .day-dt { color: rgba(255,255,255,.75); }
+.today-badge {
+  font-size: 10px; font-weight: 900;
+  background: #fff; color: #1d4ed8;
+  border-radius: 4px; padding: 2px 8px; letter-spacing: 1px; text-transform: uppercase;
+}
+.day-nav {
+  display: flex; align-items: center; gap: 6px;
+}
+.day-nav-btn {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: rgba(255,255,255,.15); border: none;
+  color: #fff; font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.day-label:not(.today-lbl) .day-nav-btn {
+  background: var(--border); color: var(--accent);
+}
+.day-cnt-badge {
+  font-size: 10px; font-weight: 800;
+  background: rgba(255,255,255,.2); color: #fff;
+  border-radius: 6px; padding: 3px 8px;
+}
+.day-label:not(.today-lbl) .day-cnt-badge {
+  background: #eff6ff; color: var(--accent);
+}
+
+.day-lessons {
+  flex: 1; overflow-y: auto; padding: 10px 14px 20px;
+  display: flex; flex-direction: column; gap: 9px;
+}
+.day-lessons::-webkit-scrollbar { width: 3px; }
+.day-lessons::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Lesson card */
+.lcard {
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 12px; overflow: hidden;
+  display: flex;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05);
+  cursor: pointer;
+  transition: transform .13s;
+}
+.lcard:active { transform: scale(.98); }
+
+.lcard-bar { width: 6px; flex-shrink: 0; }
+.lcard-body { flex: 1; padding: 14px 16px; min-width: 0; }
+
+.lc-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; gap: 6px; }
+.lc-para { font-size: 12px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+.lc-time {
+  font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 1.5px;
+  background: #dbeafe; color: var(--a2);
+  border-radius: 7px; padding: 3px 11px; white-space: nowrap;
+}
+.lc-mod { font-size: 17px; font-weight: 800; line-height: 1.35; margin-bottom: 8px; color: var(--text); }
+.lc-meta { display: flex; flex-direction: column; gap: 5px; }
+.lc-teacher { font-size: 14px; color: var(--text); font-weight: 700; }
+.lc-room {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 13px; font-weight: 800;
+  background: #dbeafe; color: #1d4ed8;
+  border: 1px solid rgba(37,99,235,.2);
+  border-radius: 8px; padding: 4px 12px;
+  align-self: flex-start; margin-top: 2px;
+}
+.lc-tag {
+  display: inline-block; font-size: 11px; font-weight: 900;
+  letter-spacing: 1px; padding: 4px 10px; border-radius: 6px;
+  text-transform: uppercase; margin-top: 5px; align-self: flex-start;
+}
+.t-naz { background: #dbeafe; color: #1d4ed8; }
+.t-am  { background: #d1fae5; color: #065f46; }
+.t-ko  { background: #fef3c7; color: #92400e; }
+
+.mc-1 .lcard-bar { background: var(--m1); }
+.mc-2 .lcard-bar { background: var(--m2); }
+.mc-3 .lcard-bar { background: var(--m3); }
+.mc-4 .lcard-bar { background: var(--m4); }
+.mc-5 .lcard-bar { background: var(--m5); }
+.mc-0 .lcard-bar { background: var(--a2); }
+
+.day-empty {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: var(--muted); gap: 10px; padding: 40px 20px;
+}
+.day-empty-ico { font-size: 48px; opacity: .35; }
+.day-empty-ttl { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; }
+.day-empty-sub { font-size: 13px; }
+
+/* Day indicator dots */
+.day-dots {
+  display: flex; justify-content: center; gap: 6px;
+  padding: 8px 0;
+  background: var(--card2); border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.day-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border); transition: all .2s; cursor: pointer;
+}
+.day-dot.on { background: var(--accent); width: 22px; border-radius: 4px; }
+.day-dot.today { background: var(--gold); }
+
+/* ══════════════════════
+   MODAL
+══════════════════════ */
+.overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(15,23,42,.5); backdrop-filter: blur(12px);
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 0;
+  opacity: 0; pointer-events: none; transition: opacity .2s;
+}
+.overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  width: 100%; max-height: 85dvh;
+  background: #fff; border-radius: 24px 24px 0 0;
+  overflow-y: auto;
+  transform: translateY(30px);
+  transition: transform .28s cubic-bezier(.34,1.4,.64,1);
+}
+.overlay.open .modal { transform: translateY(0); }
+
+.modal-handle {
+  width: 40px; height: 4px; background: var(--border);
+  border-radius: 2px; margin: 12px auto 4px;
+}
+
+.m-top {
+  padding: 10px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+}
+.m-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: #eff6ff; border: 1px solid rgba(37,99,235,.2);
+  border-radius: 100px; padding: 4px 12px; margin-bottom: 8px;
+  font-size: 10px; font-weight: 800; color: var(--accent); letter-spacing: 1px; text-transform: uppercase;
+}
+.m-modul { font-size: 18px; font-weight: 900; line-height: 1.35; color: var(--text); }
+.m-close {
+  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; margin-top: 8px;
+  background: #fef2f2; border: 1.5px solid rgba(220,38,38,.2);
+  color: var(--red); font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.m-body { padding: 16px 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+
+.m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.minfo {
+  background: var(--card2); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 12px 14px;
+}
+.minfo-ico { font-size: 16px; margin-bottom: 4px; }
+.minfo-lbl { font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
+.minfo-val { font-size: 14px; font-weight: 800; line-height: 1.3; color: var(--text); }
+
+.m-tur-tag { display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: 1px; padding: 7px 16px; border-radius: 9px; text-transform: uppercase; }
+
+.timer-wrap {
+  background: var(--card2); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 11px 14px;
+  display: flex; align-items: center; gap: 12px;
+}
+.timer-lbl { font-size: 9px; color: var(--muted); font-weight: 700; letter-spacing: 1px; flex-shrink: 0; }
+.timer-bg { flex: 1; height: 6px; background: var(--border); border-radius: 100px; overflow: hidden; }
+.timer-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--accent), var(--a2)); transition: width .5s linear, background .5s; }
+.timer-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 2px; color: var(--accent); min-width: 24px; text-align: right; flex-shrink: 0; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Katta ekranda (kiosk) o'tish tugmasi */
+.kiosk-link {
+  position: fixed; bottom: 14px; right: 14px; z-index: 20;
+  background: var(--card); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 8px 14px;
+  font-size: 11px; font-weight: 800; color: var(--muted);
+  text-decoration: none; display: flex; align-items: center; gap: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  transition: all .15s;
+}
+.kiosk-link:active { opacity: .7; }
+</style>
+</head>
+<body>
+
+{% if not selected_guruh %}
+<!-- ══════════════════════
+     GURUH TANLASH SAHIFASI
+══════════════════════ -->
+<div class="select-page">
+
+  <div class="sel-header">
+    <div class="sel-logo">
+      <div class="sel-logo-box">🎓</div>
+      <div>
+        <div class="sel-app-name">JADVAL</div>
+        <div class="sel-app-sub">Dars jadvali</div>
+      </div>
+    </div>
+    <div class="sel-title">Guruhingizni tanlang</div>
+    <input class="sel-search" type="search" id="selSearch"
+           placeholder="Guruh qidirish..." oninput="filterGroups()" autocomplete="off">
+  </div>
+
+  <div class="sel-body">
+    <div class="sel-count" id="selCount">{{ guruhlar|length }} ta guruh</div>
+    <div class="sel-grid" id="selGrid">
+      {% for g in guruhlar %}
+      <a href="?guruh={{ g.id }}" class="g-card" data-name="{{ g.nom|lower }}">
+        <div class="g-ikon" style="background:{{ g.rang }}22; border-color:{{ g.rang }}44;">
+          {% if g.ikonka_rasm %}<img src="{{ g.ikonka_rasm.url }}" alt="">
+          {% else %}<span style="filter: saturate(1.5)">{{ g.ikonka }}</span>{% endif %}
+        </div>
+        <div>
+          <div class="g-name">{{ g.nom }}</div>
+          <div class="g-cnt">{{ g.darslar.count }} ta dars</div>
+        </div>
+        <div class="g-dot" style="background:{{ g.rang }};"></div>
+      </a>
+      {% empty %}
+      <div style="grid-column:1/-1;padding:40px 20px;text-align:center;color:var(--muted);">
+        <div style="font-size:48px;margin-bottom:12px">📭</div>
+        <div style="font-size:14px;font-weight:700">Guruhlar yo'q</div>
+        <div style="font-size:12px;margin-top:5px">Admin panelda guruh yarating</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="sel-bottom">
+    <div id="clockSel" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--accent)">--:--</div>
+    <a href="/admin-panel/" title="Admin panel">⚙️</a>
+  </div>
+
+</div>
+
+{% else %}
+<!-- ══════════════════════
+     JADVAL SAHIFASI
+══════════════════════ -->
+<div class="jadval-page" id="jadvalPage">
+
+  <div class="j-header" id="jHeader">
+    <div class="j-hdr-top">
+      <a href="/" class="j-back">←</a>
+      <div class="j-guruh-info">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="j-guruh-ikon">
+            {% if selected_guruh.ikonka_rasm %}<img src="{{ selected_guruh.ikonka_rasm.url }}" alt="">
+            {% else %}{{ selected_guruh.ikonka }}{% endif %}
+          </div>
+          <div>
+            <div class="j-guruh-nom">{{ selected_guruh.nom }}</div>
+            <div class="j-guruh-sub">Haftalik jadval</div>
+          </div>
+        </div>
+      </div>
+      <div id="clockJ" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--accent);flex-shrink:0;">--:--</div>
+    </div>
+
+    {% if weeks %}
+    <div class="j-weeks" id="jWeeks">
+      {% for w in weeks %}
+      <a href="?guruh={{ selected_guruh.id }}&hafta={{ w|date:'Y-m-d' }}"
+         class="j-wbtn {% if w == selected_week %}on{% endif %}">{{ w|date:"d.m" }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="j-body">
+
+    {% if week_schedule %}
+    <div class="days-scroll" id="daysScroll">
+      {% for day in week_schedule %}
+      <div class="day-panel">
+        <div class="day-label {% if day.is_today %}today-lbl{% endif %}">
+          <div>
+            <div class="day-nm">{{ day.day_name }}{% if day.is_today %} <span class="today-badge">Bugun</span>{% endif %}</div>
+            <div class="day-dt">{{ day.date|date:"d.m.Y" }}</div>
+          </div>
+          <div class="day-nav">
+            {% if day.lessons %}
+            <span class="day-cnt-badge">{{ day.lessons|length }} dars</span>
+            {% endif %}
+          </div>
+        </div>
+
+        {% if day.lessons %}
+        <div class="day-lessons">
+          {% for lesson in day.lessons %}
+          <div class="lcard {{ lesson.rang_class }}"
+               onclick="openModal(this)"
+               data-modul="{{ lesson.modul|escapejs }}"
+               data-vaqt="{{ lesson.vaqt }}"
+               data-para="{{ lesson.para }}"
+               data-tur="{{ lesson.tur }}"
+               data-teacher="{{ lesson.oqituvchi|escapejs }}"
+               data-xona="{{ lesson.xona }}"
+               data-sana="{{ day.date|date:'d.m.Y' }}"
+               data-kun="{{ day.day_name }}"
+               data-mc="{{ lesson.rang_class }}">
+            <div class="lcard-bar"></div>
+            <div class="lcard-body">
+              <div class="lc-top">
+                <span class="lc-para">{% if lesson.para %}{{ lesson.para }}-para{% else %}Para{% endif %}</span>
+                <span class="lc-time">{{ lesson.vaqt }}</span>
+              </div>
+              <div class="lc-mod">{{ lesson.modul }}</div>
+              <div class="lc-meta">
+                {% if lesson.oqituvchi %}<div class="lc-teacher">👤 {{ lesson.oqituvchi }}</div>{% endif %}
+                {% if lesson.xona %}<div class="lc-room">📍 {{ lesson.xona }}</div>{% endif %}
+                {% if lesson.tur %}
+                <span class="lc-tag {% if 'amaliy' in lesson.tur|lower %}t-am{% elif "ko'chma" in lesson.tur|lower %}t-ko{% else %}t-naz{% endif %}">{{ lesson.tur }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="day-empty">
+          <div class="day-empty-ico">💤</div>
+          <div class="day-empty-ttl">Dam olish kuni</div>
+          <div class="day-empty-sub">Bu kun dars belgilanmagan</div>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Day dots indicator -->
+    <div class="day-dots" id="dayDots">
+      {% for day in week_schedule %}
+      <div class="day-dot {% if day.is_today %}today{% endif %}" onclick="scrollToDay({{ forloop.counter0 }})"></div>
+      {% endfor %}
+    </div>
+
+    {% else %}
+    <div style="padding:60px 20px;text-align:center;color:var(--muted);">
+      <div style="font-size:48px;margin-bottom:14px">📭</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;">Jadval yo'q</div>
+      <div style="font-size:13px;margin-top:8px;">Bu hafta uchun dars topilmadi</div>
+    </div>
+    {% endif %}
+
+  </div><!-- /j-body -->
+</div><!-- /jadval-page -->
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="handleOvClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-handle"></div>
+    <div class="m-top">
+      <div style="flex:1;min-width:0;">
+        <div class="m-badge" id="mBadge">📚 Dars tafsiloti</div>
+        <div class="m-modul" id="mModul">—</div>
+      </div>
+      <button class="m-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="m-body">
+      <div class="m-grid">
+        <div class="minfo">
+          <div class="minfo-ico">🕐</div>
+          <div class="minfo-lbl">Vaqt</div>
+          <div class="minfo-val" id="mVaqt">—</div>
+        </div>
+        <div class="minfo">
+          <div class="minfo-ico">📋</div>
+          <div class="minfo-lbl">Para</div>
+          <div class="minfo-val" id="mPara">—</div>
+        </div>
+        <div class="minfo" style="grid-column:1/-1;">
+          <div class="minfo-ico">👤</div>
+          <div class="minfo-lbl">O'qituvchi</div>
+          <div class="minfo-val" id="mTeacher" style="font-size:13px;">—</div>
+        </div>
+        <div class="minfo">
+          <div class="minfo-ico">📍</div>
+          <div class="minfo-lbl">Xona</div>
+          <div class="minfo-val" id="mXona">—</div>
+        </div>
+        <div class="minfo">
+          <div class="minfo-ico">🎯</div>
+          <div class="minfo-lbl">Dars turi</div>
+          <div><span class="m-tur-tag t-naz" id="mTur">—</span></div>
+        </div>
+      </div>
+      <div class="timer-wrap">
+        <span class="timer-lbl">Yopiladi:</span>
+        <div class="timer-bg"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+        <span class="timer-num" id="timerNum">30</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+<script>
+/* ── SOAT ── */
+const DAYS = ['Yakshanba','Dushanba','Seshanba','Chorshanba','Payshanba','Juma','Shanba'];
+const MONTHS = ['Yanvar','Fevral','Mart','Aprel','May','Iyun','Iyul','Avgust','Sentabr','Oktabr','Noyabr','Dekabr'];
+function tick() {
+  const n = new Date();
+  const t = n.getHours().toString().padStart(2,'0') + ':' + n.getMinutes().toString().padStart(2,'0');
+  const el1 = document.getElementById('clockSel');
+  const el2 = document.getElementById('clockJ');
+  if (el1) el1.textContent = t;
+  if (el2) el2.textContent = t;
+}
+tick(); setInterval(tick, 1000);
+
+/* ── GURUH QIDIRUV ── */
+function filterGroups() {
+  const q = document.getElementById('selSearch').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.g-card');
+  let visible = 0;
+  cards.forEach(el => {
+    const show = !q || el.dataset.name.includes(q);
+    el.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  const cnt = document.getElementById('selCount');
+  if (cnt) cnt.textContent = visible + ' ta guruh';
+}
+
+/* ── DAYS SCROLL ── */
+{% if selected_guruh %}
+const scroll = document.getElementById('daysScroll');
+const dots = document.querySelectorAll('.day-dot');
+
+function updateDots() {
+  if (!scroll) return;
+  const idx = Math.round(scroll.scrollLeft / window.innerWidth);
+  dots.forEach((d, i) => {
+    d.classList.toggle('on', i === idx);
+  });
+}
+
+function scrollToDay(idx) {
+  if (!scroll) return;
+  scroll.scrollTo({ left: idx * window.innerWidth, behavior: 'smooth' });
+}
+
+if (scroll) {
+  scroll.addEventListener('scroll', updateDots, { passive: true });
+
+  /* Bugungi kunga o'tish */
+  const todayIdx = (() => {
+    {% for day in week_schedule %}{% if day.is_today %}return {{ forloop.counter0 }};{% endif %}{% endfor %}
+    return 0;
+  })();
+
+  /* Header height hisoblash va bugungi kunga o'tish */
+  const hdr = document.getElementById('jHeader');
+  function applyLayout() {
+    if (hdr) {
+      const h = hdr.offsetHeight;
+      const dotsH = document.getElementById('dayDots')?.offsetHeight || 42;
+      scroll.style.height = `calc(100dvh - ${h + dotsH}px)`;
+    }
+    /* scroll-snap bo'lsa behavior:'instant' ishlamaydi, scrollLeft to'g'ri ishlaydi */
+    scroll.scrollLeft = todayIdx * scroll.offsetWidth;
+    updateDots();
+  }
+
+  /* DOM to'liq render bo'lgandan keyin ishga tushirish */
+  if (document.readyState === 'complete') {
+    applyLayout();
+  } else {
+    window.addEventListener('load', applyLayout);
+  }
+  /* Fallback: bir zumdan keyin yana bir bor */
+  setTimeout(applyLayout, 80);
+
+  window.addEventListener('resize', applyLayout);
+}
+
+/* ── MODAL ── */
+let timerIv = null, timerLeft = 30;
+const TOTAL = 30;
+
+function openModal(el) {
+  const d = el.dataset;
+  document.getElementById('mBadge').textContent = '📚 ' + d.kun + ' — ' + d.sana;
+  document.getElementById('mModul').textContent = d.modul;
+  document.getElementById('mVaqt').textContent = d.vaqt || '—';
+  document.getElementById('mPara').textContent = d.para ? d.para + '-para' : '—';
+  document.getElementById('mTeacher').textContent = d.teacher || '—';
+  document.getElementById('mXona').textContent = d.xona || '—';
+
+  const tur = d.tur || '';
+  const turEl = document.getElementById('mTur');
+  turEl.textContent = tur || '—';
+  turEl.className = 'm-tur-tag ' + (
+    tur.toLowerCase().includes('amaliy') ? 't-am' :
+    (tur.toLowerCase().includes("ko'chma") || tur.toLowerCase().includes('kochma')) ? 't-ko' :
+    't-naz'
+  );
+
+  document.getElementById('overlay').classList.add('open');
+  resetTimer();
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  clearInterval(timerIv);
+}
+
+function handleOvClick(e) {
+  if (e.target === document.getElementById('overlay')) closeModal();
+}
+
+function resetTimer() {
+  clearInterval(timerIv);
+  timerLeft = TOTAL;
+  updTimer();
+  timerIv = setInterval(() => {
+    timerLeft--;
+    updTimer();
+    if (timerLeft <= 0) { clearInterval(timerIv); closeModal(); }
+  }, 1000);
+}
+
+function updTimer() {
+  document.getElementById('timerNum').textContent = timerLeft;
+  const fill = document.getElementById('timerFill');
+  const num = document.getElementById('timerNum');
+  fill.style.width = (timerLeft / TOTAL * 100) + '%';
+  if (timerLeft <= 8) {
+    fill.style.background = 'linear-gradient(90deg,#dc2626,#ff8a65)';
+    num.style.color = '#dc2626';
+  } else if (timerLeft <= 15) {
+    fill.style.background = 'linear-gradient(90deg,#d97706,#2563eb)';
+    num.style.color = '#d97706';
+  } else {
+    fill.style.background = 'linear-gradient(90deg,#2563eb,#1d4ed8)';
+    num.style.color = '#2563eb';
+  }
+}
+
+const modalEl = document.getElementById('modal');
+if (modalEl) modalEl.addEventListener('click', resetTimer);
+
+/* touch swipe to close modal (pull down) */
+let startY = 0;
+if (modalEl) {
+  modalEl.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+  modalEl.addEventListener('touchend', e => {
+    if (e.changedTouches[0].clientY - startY > 80) closeModal();
+  }, { passive: true });
+}
+{% endif %}
+</script>
+</body>
+</html>
