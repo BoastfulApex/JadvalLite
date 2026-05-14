@@ -14,7 +14,6 @@ __pycache__/
 *.log
 local_settings.py
 db.sqlite3-journal
-jadvallite.service
 media/
 
 # Distribution / packaging
@@ -44,3 +43,7 @@ desktop.ini
 # Static files (collectstatic chiqishi)
 staticfiles/
 static_root/
+
+#server
+jadvallite.service
+jadval.sportedu.uz.nginx
