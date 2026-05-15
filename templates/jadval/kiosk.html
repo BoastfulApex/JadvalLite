@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=1080, initial-scale=1.0">
 <title>Dars Jadvali — Display</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
@@ -40,12 +40,12 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {
-  width: 100%; min-height: 100dvh;
+  width: 1080px; height: 1920px;
   background: var(--bg);
   color: var(--text);
   font-family: 'Nunito', sans-serif;
   user-select: none;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 /* subtle grid */
@@ -65,8 +65,8 @@ body::after { display: none; }
   display: grid;
   grid-template-columns: var(--SB) 1fr;
   grid-template-rows: 1fr;
-  width: 100%;
-  min-height: 100dvh;
+  width: 1080px;
+  height: 1920px;
   position: relative; z-index: 1;
 }
 
@@ -82,7 +82,7 @@ body::after { display: none; }
   overflow: hidden;
   position: sticky;
   top: 0;
-  height: 100dvh;
+  height: 1920px;
   z-index: 10;
   box-shadow: 2px 0 10px rgba(0,0,0,.06);
 }
@@ -180,7 +180,7 @@ body::after { display: none; }
   grid-column: 2;
   display: flex; flex-direction: column;
   overflow: hidden;
-  min-height: 100dvh;
+  height: 1920px;
 }
 
 /* Hamburger (mobile only) */
@@ -284,7 +284,7 @@ body::after { display: none; }
 ════════════════════════ */
 .wgrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 11px;
   animation: fadeUp .28s ease both;
 }
@@ -514,74 +514,9 @@ body::after { display: none; }
 
 @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ════════════════════════
-   RESPONSIVE — Tablet + Mobile (< 1200px)
-════════════════════════ */
-@media (max-width: 1199px) {
-  .layout { grid-template-columns: 1fr; }
-
-  .sidebar {
-    position: fixed;
-    top: 0; left: 0;
-    width: min(280px, 85vw);
-    height: 100dvh;
-    transform: translateX(-110%);
-    transition: transform .28s cubic-bezier(.4,0,.2,1);
-    z-index: 1000;
-    box-shadow: 4px 0 30px rgba(0,0,0,.15);
-    overflow: hidden;
-  }
-  .sidebar.sb-open { transform: translateX(0); }
-
-  .right { grid-column: 1; min-height: 100dvh; }
-
-  .hamburger { display: flex; align-items: center; justify-content: center; }
-
-  /* Haftalik: ketma-ket */
-  .wgrid {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-  .day-col {
-    border-radius: 0;
-    border-left: none; border-right: none; border-top: none;
-    min-height: unset;
-    box-shadow: none;
-  }
-  .day-col.today-col { border-left: none; border-right: none; border-top: none; }
-  .day-col:first-child { border-top: 1.5px solid var(--border); border-radius: var(--r) var(--r) 0 0; }
-  .day-col:last-child { border-radius: 0 0 var(--r) var(--r); }
-
-  .day-lessons { gap: 0; padding: 0; }
-  .lcard {
-    border-radius: 0;
-    border-left-width: 4px;
-    border-top: none; border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-  .lcard:last-child { border-bottom: none; }
-
-  /* Kunlik: 1 ustun */
-  .d-grid { grid-template-columns: 1fr; }
-
-  .m-row { grid-template-columns: repeat(2, 1fr); }
-
-  .topbar { padding: 8px 14px; }
-  .content { padding: 14px 14px 24px; }
-}
-
-/* ════════════════════════
-   RESPONSIVE — Mobile (< 480px)
-════════════════════════ */
-@media (max-width: 479px) {
-  .tb-title { font-size: 15px; letter-spacing: 1px; }
-  .content { padding: 10px 10px 20px; }
-  .m-body { padding: 14px 14px 18px; }
-  .m-top { padding: 14px 14px 12px; }
-  .wnav { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 3px; }
-  .wnav::-webkit-scrollbar { display: none; }
-}
+/* Fixed 1080×1920 kiosk — no responsive overrides */
+.hamburger { display: none; }
+.sb-backdrop { display: none; }
 </style>
 </head>
 <body>
